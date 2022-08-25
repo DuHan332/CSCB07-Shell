@@ -1,0 +1,50 @@
+package command;
+
+import nodetype.Directory;
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is implemented from from interface Commands and it is able to print the current
+ * working directory including the whole path.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class PrintWorkingDirectory implements Commands {
+  public String getManual() {
+    String Manual =
+        "pwd:\n" + "Print the current working directory " + "(including the whole" + " path).";
+    return Manual;
+  }
+
+  /**
+   * The function would check the input first and throw error if the input is not valid.The the
+   * function would search the path from current directory until it finds the root directory and it
+   * returns a string that contains the whole path that standing for current working directory.
+   * 
+   * @param input input from the user
+   * @param track a Tracker that track the root directory and current directory
+   * @return a string that contains error information if the input is invalid, otherwise the string
+   *         shows the current working directory including the whole path.
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length != 0) {
+      throw new SystemErrorException("This command can't take input");
+    } else {
+      String result = "";
+      Directory currentDirectory = track.getCurrentDirectory();
+      if (currentDirectory == track.getRootDirectory()) {
+        return "/";
+      } else {
+        while (currentDirectory != track.getRootDirectory()) {
+          result = "/" + currentDirectory.getName() + result;
+          currentDirectory = currentDirectory.getRoot();
+        }
+        return result;
+      }
+
+    }
+  }
+}

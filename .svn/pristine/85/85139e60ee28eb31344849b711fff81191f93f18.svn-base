@@ -1,0 +1,24 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content for
+ * command List.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForList implements Output {
+
+  /**
+   * The function would print the list of the target directories.
+   * 
+   * @param content the string received from List command
+   */
+  public void giveOutput(String content) {
+    String[] list = content.split("\r");
+    for (String message : list) {
+      System.out.println(message);
+    }
+  }
+}

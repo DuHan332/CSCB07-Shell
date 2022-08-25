@@ -1,0 +1,18 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public class MoveItem implements Commands{
+
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    CopyItem cp = new CopyItem();
+    RemoveDirectory rm = new RemoveDirectory();
+    cp.execute(input, tracker);
+    String[] oldPath = new String[1];
+    rm.execute(oldPath, tracker);
+    return "";
+  }
+
+}

@@ -1,0 +1,62 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import nodetype.*;
+import helper.FindPath;
+
+
+public class ChangeDirectory implements Commands{
+  
+  public String execute(String[] parameter, Tracker tracker) {
+    if (parameter.length == 0) 
+      return "1";
+    else if (parameter.length > 1) 
+      return "2";
+    if (parameter[0].equals("..")) {
+      tracker.setCurrent_directory(tracker.getCurrent_directory().getRoot());
+      return "";
+    }
+    String result;
+    String[] route = parameter[0].split("/");
+    ArrayList<String> routeList = new ArrayList<String>(); 
+    for (String routeName : route) {
+      routeList.add(routeName);
+    }
+    if (route[0].equals("")) {
+      routeList.remove(0);
+      result = ChangeDirectoryForWholeRoute(tracker, routeList);
+    }else{
+      result = ChangeDirectoryForRelativeRoute(tracker, routeList);
+    }
+    return result;
+  }
+  
+  
+  private String ChangeDirectoryForWholeRoute(Tracker tracker, ArrayList<String> routeList) {
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getRoot_directory());
+    if (target == null) {
+      return "path not found";
+    }else if (!target.getIs_directory()) {
+      return "This is a file";
+    }else {
+      tracker.setCurrent_directory((Directory) target);
+    }
+    return "";
+  }
+  
+  
+  private String ChangeDirectoryForRelativeRoute(Tracker tracker, ArrayList<String> routeList) {
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getCurrent_directory());
+    if (target == null) {
+      return "path not found";
+    }else if (!target.getIs_directory()) {
+      return "This is a file";
+    }else {
+      tracker.setCurrent_directory((Directory) target);
+    }
+    return "";
+  }
+}

@@ -1,0 +1,6 @@
+package outputformatter;
+
+public interface Output {
+  
+  public void giveOutput(String content);
+}

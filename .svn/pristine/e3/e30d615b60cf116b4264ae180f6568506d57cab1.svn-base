@@ -1,0 +1,25 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content for command Echo.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForEcho implements Output {
+
+  /**
+   * The function would print nothing if Echo return an empty string. Or it would print the string
+   * that user input.
+   * 
+   * @param content the string received from echo command
+   */
+  public void giveOutput(String content) {
+    if (content.equals("")) {
+      return;
+    } else {
+      System.out.println(content);
+    }
+  }
+}

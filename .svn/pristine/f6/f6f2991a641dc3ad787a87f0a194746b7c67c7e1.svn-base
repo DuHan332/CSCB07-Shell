@@ -1,0 +1,49 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.JNode;
+import java.net.*;
+import java.io.*;
+import driver.GiveOutput;
+
+public class CopyURL implements Commands {
+
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    if (input.length > 1) {
+      throw new SystemErrorException("There is more than one parameter");
+    } else if (input[0].startsWith("\"") || input[0].endsWith("/")) {
+      throw new SystemErrorException(input[0] + " is not a valid URL");
+    }
+    int startOfFileName = input[0].lastIndexOf("/");
+    String fileName = input[0].substring(startOfFileName + 1, input[0].length());
+    for (JNode i : tracker.getCurrentDirectory().getSub())
+      if (i.getName().equals(fileName) && !i.getIsDirectory())
+        throw new SystemErrorException(
+            "There is already a file named: " + fileName + " in the current directory");
+    try {
+      GiveOutput downloadedFile = new GiveOutput();
+      URL inputURL = new URL(input[0]);
+      URLConnection connection = inputURL.openConnection();
+      BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+      String inputFileLine;
+      while ((inputFileLine = in.readLine()) != null) {
+        downloadedFile.redirectOutput(inputFileLine + "\n", fileName, true, tracker);
+      }
+      in.close();
+    } catch (MalformedURLException e) {
+      throw new SystemErrorException(input[0] + " is not a valid URL");
+    } catch (IOException e) {
+      throw new SystemErrorException("Cannot connect to " + input[0]);
+    }
+    return "";
+  }
+
+  @Override
+  public String getManual() {
+    return "curl URL:\nURL is a web address. Retrieve the file at that URL"
+        + "and add it to the current\nworking directory.";
+  }
+
+}

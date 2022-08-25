@@ -1,0 +1,13 @@
+package command;
+
+import driver.Tracker;
+
+public class PopDirectory implements Commands{
+
+  @Override
+  public String execute(String[] input, Tracker tracker) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+}

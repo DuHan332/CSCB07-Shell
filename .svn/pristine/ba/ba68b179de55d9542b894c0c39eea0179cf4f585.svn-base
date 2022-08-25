@@ -1,0 +1,9 @@
+Class name: ChangeDirectory	
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Change the current working directory to a new directory
+	
+Collaborators:
+* Directory 

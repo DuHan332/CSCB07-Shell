@@ -1,0 +1,47 @@
+package nodetype;
+
+/**
+ * This class inherits from the class of JNode.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class File extends JNode {
+  private static final long serialVersionUID = 1L;
+  /**
+   * a String represents content that the file contains.
+   */
+  private String content;
+
+  /**
+   * This function can get the content of the file.
+   * 
+   * @return a String that the file contains
+   */
+  public String getContent() {
+    return this.content;
+  }
+
+  /**
+   * This function can set the content of the file.
+   * 
+   * @param content a String used to set the content of file
+   */
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  /**
+   * This function is a constructor for a file
+   * 
+   * @param first_content a String represents the original content that the file contains
+   * @param root a Directory that represents the file's root
+   * @param name a String represents the name of the file
+   */
+  public File(String first_content, Directory root, String name) {
+    this.content = first_content;
+    this.setRoot(root);
+    this.setIsDirectory(false);
+    this.setName(name);
+  }
+}

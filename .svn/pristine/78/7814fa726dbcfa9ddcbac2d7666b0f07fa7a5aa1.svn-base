@@ -1,0 +1,101 @@
+package driver;
+
+import nodetype.Directory;
+import java.util.ArrayList;
+
+/**
+ * This class contains the current directory, root directory, directory and input history for
+ * tracking purpose.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class Tracker implements java.io.Serializable {
+  private boolean swc;
+  private Directory currentDirectory;
+  private Directory rootDirectory;
+  private ArrayList<String> history = new ArrayList<String>();
+  private ArrayList<Directory> stack = new ArrayList<Directory>();
+
+  /**
+   * The getter function for directory stack
+   * 
+   * @return stack the directory stack
+   */
+  public ArrayList<Directory> getStack() {
+    return stack;
+  }
+
+  /**
+   * The setter function for directory stack
+   */
+  public void setStack(ArrayList<Directory> stack) {
+    this.stack = stack;
+  }
+
+  /**
+   * The getter function for ArrayList of command history
+   * 
+   * @return history ArrayList of command history
+   */
+  public ArrayList<String> getHistory() {
+    return history;
+  }
+
+  /**
+   * The setter function for ArrayList of command history
+   */
+  public void setHistory(ArrayList<String> history) {
+    this.history = history;
+  }
+
+  /**
+   * The getter function for root directory
+   * 
+   * @return root_directory the root directory
+   */
+  public Directory getRootDirectory() {
+    return rootDirectory;
+  }
+
+  /**
+   * The setter function for root directory
+   */
+  public void setRootDirectory(Directory rootDirectory) {
+    this.rootDirectory = rootDirectory;
+  }
+
+  /**
+   * The getter function for current directory
+   * 
+   * @return current_directory the current directory
+   */
+  public Directory getCurrentDirectory() {
+    return currentDirectory;
+  }
+
+  /**
+   * The setter function for current directory
+   */
+  public void setCurrentDirectory(Directory currentDirectory) {
+    this.currentDirectory = currentDirectory;
+  }
+
+  /**
+   * The getter function for swc
+   * 
+   * @return swc the variable the determine whether JShell is operation
+   */
+  public boolean getSwc() {
+    return swc;
+  }
+
+  /**
+   * The setter function for swc
+   */
+  public void setSwc(boolean swc) {
+    this.swc = swc;
+  }
+
+}

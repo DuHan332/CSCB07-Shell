@@ -1,0 +1,11 @@
+package outputformatter;
+
+public class OutputForGeneralError implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+
+    System.out.println(content);
+  }
+
+}

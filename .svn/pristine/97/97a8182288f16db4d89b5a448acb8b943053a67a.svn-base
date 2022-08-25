@@ -1,0 +1,71 @@
+//Sprint 2 Backlog
+
+October 28th to November 3rd
+
+
+User Stories from Product Backlog that we will address in this sprint:
+
+a) As a user, I want to save current working directory into the stack so        
+   that I can change to another directory.
+b) As a user, I want to remove the directory on the top of stack so that       
+   I can change to this directory.
+c) As a user, I want to know the recent commands.                             
+d) As a user, I want to view the contents of the specific files.                
+e) As a user, I want to see what I typed.                                       
+f) As a user, I want to overwrite specific file with specific string.           
+g) As a user, I want to create a file with specific string.                     
+h) As a user, I want to add new contents to the specific file.                  
+i) As a user, I want to know the description of the commands.                        
+j) As a user, I want to see the error message when I give the wrong input.      
+
+Specific tasks to be accomplished:
+a-1. (PushDirectory) Write base code for the PushDirectory class.
+a-2. (PushDirectory) Write a function that save the current directory in the 
+                     stack.
+b-1. (PopDirectory) Write the base code for PopDirectory class.
+b-2. (PopDirectory) Write a function that remove the top entry from the 
+                    directory stack, and change the current directory into it.
+c-1. (History) Write the base code for the History Class.
+c-2. (History) Write a function that print out recent commands used in the 
+               program.
+c-3. (InputInterpreter) Write a code that modify ArrayList of history.
+d-1. (Concatenate) Write the base code for Concatenate class.
+d-2. (Concatenate) Write a function that display the contents of all file in the
+                   parameter concatenated in the shell.
+e-1. (Echo) Write the base code for Echo (parent) class.
+f-1. (EchoOverwrite) Write base code for the EchoOverwrite class.
+f-2. (EchoOverwrite) Write a function that replace the old contents in the 
+                     target file with new content.
+f-3. (EchoOverwrite) Write a function that create a new file with the new 
+                     content in it.
+h-1. (EchoAppend) Write base code for the EchoAppend class.
+h-2. (EchoAppend) Write a function that add new content into the target file
+i-1. (Manual) Write base code for the Manual class.
+i-2. (Manual) Write a function that print documentation for specific commands.
+j-1. (ErrorChecker) Write the basic structure for Error class
+j-2. (ErrorChecker) Write the code that handle the error for specific function.
+                    (This should be written by the person that wrote that 
+                    function)
+k-1. (Tracker) Create a Directory that track the root
+k-2. (Tracker) Create a Directory that track the current directory
+k-3. (Tracker) Create a ArrayList of JNode to be the stack of directory
+k-4. (Tracker) Create a ArrayList of String that store the command history
+l-1. (FindPath) Write the base code for FindPach class.
+l-2. (FindPath) Write a function that return the target directory for the given 
+                path or null if the path does not exist.
+
+y-1. Test the class written in Sprint1 and modify them if there exists any bug.
+z-1. review CRC Cards for all function in Sprint 2.
+
+These tasks are assigned as follows:
+
+User: Du Han
+Tasks: c-1, c-2, c-3, d-1, d-2, e-1, i-1, i-2, j-2, k-4, l-1, l-2, z-1, y-1
+
+User: Dezhi Ren
+Tasks: a-1, a-2, b-1, b-2, j-1, j-2, k-1, k-2, k-3, z-1, y-1
+
+User: Yuanqian Fang
+Tasks: f-1, f-2, f-3, h-1, h-2, j-2, z-1, y-1
+
+

@@ -1,0 +1,16 @@
+package outputformatter;
+
+public class OutputForPrintWorkingDirectory implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+    if (content.substring(0, 5).equals("Error")) {
+      System.out.println(content);
+    }else {
+      System.out.println("Path:\n");
+      System.out.println(content);
+    }
+    
+  }
+
+}

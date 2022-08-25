@@ -1,0 +1,134 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.CopyURL;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+import nodetype.File;
+
+public class CopyURLTest {
+
+  private CopyURL curl;
+  private Directory root;
+  private Tracker tracker;
+
+  @Before
+  public void setUp() {
+    curl = new CopyURL();
+    root = new Directory(null, "/");
+    Directory directoryA = new Directory(root, "FolderA");
+    root.getSub().add(directoryA);
+
+    File fileA = new File("I am A", directoryA, "073.txt");
+    directoryA.getSub().add(fileA);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(0).getName(), "073.txt");
+  }
+
+  /**
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "FolderA");
+  }
+
+  /**
+   * It would test whether the CopyURL command return the exception as wanted for wrong number of
+   * input
+   */
+  @Test
+  public void testCopyURLForWrongNumberOfInput() {
+    String[] parameter = new String[3];
+    try {
+      curl.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The number of input is wrong because there is 3 input");
+    }
+  }
+
+  /**
+   * It would test whether the CopyURL command return the exception as wanted for wrong URL
+   */
+  @Test
+  public void testCopyURLForWrongURL() {
+    String[] parameter = new String[1];
+    parameter[0] = "http://www.abcdefg/";
+    try {
+      curl.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "http://www.abcdefg/ is not a valid URL");
+    }
+  }
+
+  /**
+   * It would test whether the CopyURL command return the exception as wanted for a connection error
+   */
+  @Test
+  public void testCopyURLForConnectionError() {
+    String[] parameter = new String[1];
+    parameter[0] =
+        "https://markus.utsc.utoronto.ca/svn/cscb07f20/group_0433/Assignment2/dailyScrumMeetings/A2BrendezhiSprint1November19.txt";
+    try {
+      curl.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Cannot connect to " + parameter[0]);
+    }
+  }
+
+  /**
+   * It would test whether the CopyURL command return the exception as wanted if there already
+   * exists a file with the same name
+   */
+  @Test
+  public void testCopyURLForExistingFileName() {
+    String[] parameter = new String[1];
+    parameter[0] = "http://www.cs.cmu.edu/~spok/grimmtmp/073.txt";
+    tracker.setCurrentDirectory((Directory) root.getSub().get(0));
+    try {
+      curl.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(),
+          "There is already a file named: 073.txt in the current directory");
+    }
+  }
+
+  /**
+   * It would test if the CopyURL command download the file from the Internet into the current
+   * directory correctly
+   */
+  @Test
+  public void testCopyURLCorrectURLAndFileName() throws SystemErrorException {
+    String[] parameter = new String[1];
+    parameter[0] = "http://www.cs.cmu.edu/~spok/grimmtmp/073.txt";
+    curl.execute(parameter, tracker);
+    assertEquals(root.getSub().get(1).getName(), "073.txt");
+  }
+
+  /**
+   * It would test if the CopyURL return the manual of itself
+   */
+  @Test
+  public void testManual() {
+    assertEquals(curl.getManual(), "curl URL:\nURL is a web address. Retrieve the file at that URL"
+        + "and add it to the current\nworking directory.");
+  }
+
+}

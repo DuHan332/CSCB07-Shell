@@ -1,0 +1,10 @@
+Class name: EchoAppend
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Append a string to a file.
+	
+Collaborators:
+* File
+* FindPath

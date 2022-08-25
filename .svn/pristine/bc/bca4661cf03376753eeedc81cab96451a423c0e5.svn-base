@@ -1,0 +1,26 @@
+package command;
+
+import driver.Tracker;
+
+public class PushDirectory implements Commands{
+
+  public String execute(String[] parameter, Tracker tracker) {
+    ChangeDirectory CD = new ChangeDirectory();
+    String result;
+    if (parameter.length == 0) {
+      return "Error1";
+    }else if (parameter.length > 1) {
+      return "Error2";
+    }else {
+      tracker.getStack().add(tracker.getCurrent_directory());
+      result = CD.execute(parameter, tracker);
+      if (result.equals("This is a file")) {
+        tracker.getStack().remove(tracker.getStack().size() - 1);
+        result = "The DIR is a file";
+      }
+    }
+        
+    return result;
+  }
+
+}

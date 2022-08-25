@@ -1,0 +1,65 @@
+package command;
+import java.util.ArrayList;
+
+import driver.Tracker;
+
+public class History implements Commands {
+	
+	public String execute(String[] input, Tracker track) {
+		if (input.length==0)
+		{
+			return showhistory(track.getHistory(), track.getHistory().size());
+		}
+		else if(input.length==1) {
+			if(isNumeric(input[0])) {
+				if(input[0].length()>5) {
+					return "Error4";//parameter is too big
+				}
+				int number = Integer.valueOf(input[0]);
+				return showhistory(track.getHistory(), number);
+			}
+			else {
+				return "Error1"; //parameter should be a number
+			}
+			
+		}
+		else {
+			return "Error2";//too many parameters
+		}
+	}
+	
+
+	private static String showhistory(ArrayList<String> list, int number) {
+		if(number == 0) {
+			return "Error3";//the parameter should be bigger than 0
+		}
+		else if (number > list.size())
+		{
+			return showhistory(list, list.size());
+		}
+		else {
+			StringBuilder result = new StringBuilder();
+			for (int i = 0; i<list.size();i++)
+			{
+				if(i>=(list.size()-number))
+				{
+				result.append(i+1);
+				result.append(". "+ list.get(i) + "\r");
+				}
+			}
+			String strresult = result.toString();
+			return strresult;
+		}		
+	}
+	
+
+	private static boolean isNumeric(String str){
+	    for (int i= 0;i<str.length();i++){
+	        if (!Character.isDigit(str.charAt(i))){
+	            return false;
+	        }
+	    }
+	    return true;
+	 }
+
+}

@@ -1,0 +1,14 @@
+package outputformatter;
+
+public class OutputForExit implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+    if (content.equals("")) 
+      return;
+    else 
+      System.out.println(content);
+    
+  }
+
+}

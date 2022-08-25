@@ -1,0 +1,29 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public class PushDirectory implements Commands{
+
+  public String execute(String[] parameter, Tracker tracker) throws SystemErrorException {
+    ChangeDirectory CD = new ChangeDirectory();
+    if (parameter.length == 0) {
+      throw new SystemErrorException("Losing the target directory");
+    }else if (parameter.length > 1) {
+      throw new SystemErrorException("There is more than one parameter");
+    }else {
+      try {
+        String result;
+        tracker.getStack().add(tracker.getCurrent_directory());
+        result = CD.execute(parameter, tracker);
+        
+      } catch (SystemErrorException e) {
+        tracker.getStack().remove(tracker.getStack().size() - 1);
+        System.err.println(e.getMessage());
+      }
+    }
+        
+    return "";
+  }
+
+}

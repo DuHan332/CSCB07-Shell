@@ -1,0 +1,53 @@
+package driver;
+import outputformatter.*;
+import java.util.HashMap;
+/**
+ * This class calls the OutputFormatter for corresponding command. 
+ * @author Dezhi Ren
+ *
+ */
+
+public class GiveOutput {
+  private HashMap<String, String> outputHashMap = new HashMap<String, String>();
+  
+  /**
+   *The function would first check which command user calls. Next the function 
+   *would send the input to OutputFormatter for corresponding command. Then the
+   *function would call the GiveOutput for that command.
+   *@param commandName        the name of the command that user called.   
+   *@param content      the returned string from the command.   
+   *@exception InstantiationException  this exception is thrown if command is 
+   *                                   not in the HashMap
+   *@exception IllegalAccessException  this exception is thrown if command is 
+   *                                   not in the HashMap
+   *@exception ClassNotFoundException  this exception is thrown if command is 
+   *                                   not in the HashMap         
+   */
+  public void printOutput(String commandName, String content) {
+    String outputForCommand = outputHashMap.get(commandName);  
+    try {
+      Output output = (Output) Class.forName(outputForCommand).newInstance();
+      output.giveOutput(content);
+    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   *The function would initialize the output HashMap
+   */
+  public void initializeOutputHashMap() {
+    this.outputHashMap.put("cd", "outputformatter.OutputForChangeDirectory");
+    this.outputHashMap.put("exit", "outputformatter.OutputForExit");
+    this.outputHashMap.put("ls", "outputformatter.OutputForList");
+    this.outputHashMap.put("mkdir", "outputformatter.OutputForMakeDirectory");
+    this.outputHashMap.put("pwd", "outputformatter.OutputForPrintWorkingDirectory");
+    this.outputHashMap.put("history", "outputformatter.OutputForHistory");
+    this.outputHashMap.put("pushd", "outputformatter.OutputForPushDirectory");
+    this.outputHashMap.put("popd", "outputformatter.OutputForPopDirectory");
+    this.outputHashMap.put("cat", "outputformatter.OutputForConcatenate");
+    this.outputHashMap.put("echo", "outputformatter.OutputForEcho");
+    this.outputHashMap.put("man", "outputformatter.OutputForManual");
+    
+  }
+}

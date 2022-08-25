@@ -1,0 +1,14 @@
+Class name: PopDirectory
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Remove the top entry from the directory stack
+* Change current working directory into which directory was removed from the 
+  directory stack
+	
+Collaborators:
+* ChangeDirectory
+* Directory
+* Tracker
+* FindPath

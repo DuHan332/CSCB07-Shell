@@ -1,0 +1,94 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.PopDirectory;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.*;
+
+public class PopDirectoryTest {
+
+  private PopDirectory popd;
+  private Directory root;
+  private Tracker tracker;
+
+  @Before
+  public void setUp() {
+
+    popd = new PopDirectory();
+    root = new Directory(null, "/");
+    Directory directoryA = new Directory(root, "FolderA");
+    root.getSub().add(directoryA);
+
+    Directory directoryB = new Directory(root, "FolderB");
+    root.getSub().add(directoryB);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(directoryB);
+    tracker.setRootDirectory(root);
+    tracker.getStack().add(directoryA);
+  }
+
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(root.getSub().get(1).getName(), "FolderB");
+  }
+
+  /**
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "FolderB");
+    assertTrue(tracker.getStack().size() == 1);
+    assertEquals(tracker.getStack().get(0).getName(), "FolderA");
+  }
+
+  /**
+   * It would test whether the PushDirectory return the exception as wanted with parameter
+   */
+  @Test
+  public void testPopDirectoryWithParameter() {
+    String[] parameter = new String[2];
+    try {
+      popd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Command \"pop\" cannot take parameter.");
+    }
+  }
+
+  /**
+   * It would test whether the PushDirectory return the exception as wanted if the stack is empty
+   */
+  @Test
+  public void testPopDirectoryWithEmptyStack() {
+    String[] parameter = new String[0];
+    tracker.getStack().remove(0);
+    try {
+      popd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The stack is empty.");
+    }
+  }
+
+  /**
+   * It would test if the PushDirectory pop the directory from stack and change directory into it
+   * correctly
+   */
+  @Test
+  public void testPopDirectoryWithCorrectInput() throws SystemErrorException {
+    String[] parameter = new String[0];
+    popd.execute(parameter, tracker);
+    assertEquals(tracker.getCurrentDirectory().getName(), "FolderA");
+    assertTrue(tracker.getStack().size() == 0);
+  }
+
+}

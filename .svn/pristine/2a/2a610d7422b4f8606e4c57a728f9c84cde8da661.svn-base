@@ -1,0 +1,25 @@
+package driver;
+
+import nodetype.Directory;
+
+public class Tracker {
+  private Directory current_directory;
+  private Directory root_directory;
+  
+  public Directory getRoot_directory() {
+    return root_directory;
+  }
+
+  public void setRoot_directory(Directory root_directory) {
+    this.root_directory = root_directory;
+  }
+
+  public Directory getCurrent_directory() {
+    return current_directory;
+  }
+
+  public void setCurrent_directory(Directory current_directory) {
+    this.current_directory = current_directory;
+  }
+
+}

@@ -1,0 +1,77 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.Manual;
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/*
+ * These tests would test if Manual would return String which is the manual of
+ * a existed command. The tracker would not be used in Manual class so tracker
+ * here does not contain any contents.
+ */
+public class ManualTest {
+  Manual manual;
+  Tracker tracker;
+
+  /*
+   * initialize the tracker and manual object
+   */
+  @Before
+  public void setUp() {
+    tracker = new Tracker();
+    manual = new Manual();
+  }
+
+  /*
+   * These tests would test several cases for the man command: no parameter, one
+   * correct parameter, more than one parameters and incorrect parameter(the manual
+   * does not exist).
+   */
+  @Test
+  public void testManual() {
+    
+    String[] input0 = {};
+    try {
+      assertEquals("", manual.execute(input0, tracker));
+    } catch (SystemErrorException e) {
+      assertEquals("must has at least one parameter", e.getMessage());
+    }
+    
+    String[] input1 = {"man"};
+    String expected1 = "man CMD [CMD2 бн]:\nPrint documentation for CMD(s)";
+    try {
+      assertEquals(expected1, manual.execute(input1, tracker));
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input2 = {"history"};
+    String expected2 = "history [n]:\nThis command will print out "
+        + "recent commands, one command per line.We can\ntruncate the "
+        + "output by specifying a number n after the command to print\nthe "
+        + "last n commands typed";
+    try {
+      assertEquals(expected2, manual.execute(input2, tracker));
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input3 = {"man","history"};
+    try {
+      assertEquals("", manual.execute(input3, tracker));
+    } catch (SystemErrorException e) {
+      assertEquals("too many parameters", e.getMessage());
+    }
+    
+    String[] input4 = {"manDNE"};
+    try {
+      assertEquals("", manual.execute(input4, tracker));
+    } catch (SystemErrorException e) {
+      assertEquals("manDNE does not exist", e.getMessage());
+    }
+    
+  }
+}

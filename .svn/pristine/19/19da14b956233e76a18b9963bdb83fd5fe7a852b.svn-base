@@ -1,0 +1,78 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+import nodetype.JNode;
+
+/**
+ * This class is implemented from interface Commands and it would list the structure of the whole
+ * file system in specific format. 
+ * 
+ * @author Du Han
+ */
+public class Tree implements Commands {
+
+  /**
+   * This function would return the manual of this command.
+   * 
+   * @return a String that describes how to use this command.
+   */
+  public String getManual() {
+    String manual = "tree:\nThis command would start from the root directory "
+        + "('/') and display the entire\nfile system as a tree. For every level"
+        + " of the tree, it would be indented by a\ntab character.";
+    return manual;
+  }
+
+  /**
+   * This function would check if the input is valid and initialize the string that should be
+   * returned. Then it would call the helper function display tree to traverse the whole file system
+   * and write the data into the string that should be returned. it would throw error if the input
+   * is invalid
+   * 
+   * @param input the input from user
+   * @param track a Tracker that track the root directory and current directory
+   * @return a String that contains the result of this function
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length == 0) {
+      StringBuilder result = new StringBuilder();
+      result.append("/" + "\n");
+      displaytree(track.getRootDirectory(), 1, result);
+      result.deleteCharAt(result.length() - 1);
+      return result.toString();
+    } else {
+      throw new SystemErrorException("This command can't take input");
+    }
+  }
+
+
+  /**
+   * This function would recurse the whole file system, and write the name of each Node into the
+   * String result. It would record the level of recurse to indent the result.
+   * 
+   * @param directory the root Node of the file system
+   * @param level the level of recurse
+   * @param result the String that should be edited
+   */
+  private static void displaytree(Directory directory, int level, StringBuilder result) {
+
+    String preStr = "";
+    for (int i = 0; i < level; i++) {
+      preStr += "  ";
+    }
+
+    for (int i = 0; i < directory.getSub().size(); i++) {
+      JNode current = directory.getSub().get(i);
+      result.append(preStr + current.getName() + '\n');
+      if (current.getIsDirectory()) {
+        Directory temp = (Directory) current;
+        if (!temp.getSub().isEmpty()) {
+          displaytree(temp, level + 1, result);
+        }
+      }
+    }
+  }
+}

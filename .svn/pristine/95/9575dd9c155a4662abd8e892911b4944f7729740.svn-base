@@ -1,0 +1,41 @@
+
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class would just edit the value of a boolean in the tracker to false, so Jshell would stop
+ * asking user to input.
+ * 
+ * @author Du Han
+ *
+ */
+public class Exit implements Commands {
+  /**
+   * This function would return the manual of this command.
+   * 
+   * @return a String that describes how to use this command.
+   */
+  public String getManual() {
+    String Manual = "exit:\nQuit the program";
+    return Manual;
+  }
+
+  /**
+   * This function would edit the swc in the tracker to false then return a empty string, if there
+   * are one or more parameters, it would throw error.
+   * 
+   * @return a empty String
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length > 0) {
+      throw new SystemErrorException("This command should not have parameter");
+    } else {
+      track.setSwc(false);
+    }
+    return "";
+  }
+
+}

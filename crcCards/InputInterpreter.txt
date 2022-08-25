@@ -1,0 +1,17 @@
+Class name: InputInterpreter		
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Find the proper function and call it 
+* If the function is not found, call the general error message
+* If the function found doesn't execute correctly, call the specific error
+  message
+	
+Collaborators:
+* Output
+* List
+* MakeDirectory
+* ChangeDirectory
+* PrintWorkingDirectory
+* ErrorChecker

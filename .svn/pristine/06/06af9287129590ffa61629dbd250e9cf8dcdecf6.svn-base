@@ -1,0 +1,362 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.Concatenate;
+import command.List;
+import driver.Tracker;
+import exception.SystemErrorException;
+import helper.RedirectOverwrite;
+import nodetype.Directory;
+import nodetype.File;
+
+/**
+ * This class is used for testing the helper function RedirectOverwrite. It would test whether the
+ * command redirect and overwrite in the correct way or the command throws the correct exception.
+ * Notice that we need to guarantee the classes of List and Concatenate pass their tests, since we
+ * use command list and concatenate to test.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class RedirectOverwriteTest {
+  private Directory root;
+  private Tracker tracker;
+  private List ls;
+  private Concatenate cat;
+
+  /**
+   * It would initialize the file system used for testing.
+   */
+
+  @Before
+  public void setUp() {
+    ls = new List();
+    cat = new Concatenate();
+    root = new Directory(null, "/");
+    Directory directoryA = new Directory(root, "FolderA");
+    root.getSub().add(directoryA);
+
+    File fileA = new File("I am A", directoryA, "FileA");
+    directoryA.getSub().add(fileA);
+
+    Directory directoryB = new Directory(root, "FolderB");
+    root.getSub().add(directoryB);
+
+    Directory directoryC = new Directory(directoryB, "FolderC");
+    directoryB.getSub().add(directoryC);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(root.getSub().get(1).getName(), "FolderB");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(0).getName(), "FileA");
+    assertEquals(((Directory) root.getSub().get(1)).getSub().get(0).getName(), "FolderC");
+  }
+
+  /**
+   * It would test the case that the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "FolderA");
+    assertEquals(tracker.getRootDirectory().getSub().get(1).getName(), "FolderB");
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the path does not exist in
+   * the file system.
+   */
+  @Test
+  public void testPathDoesNotExist() {
+    String input = "/FolderA/FolderD/FileB";
+    try {
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The path doesn't exist");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the user wants create new
+   * file in a file.
+   */
+  @Test
+  public void testCreateNewFileUnderFile() {
+    String input = "/FolderA/FileA/FileB";
+    try {
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Not allowed to create a file in a file");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the path points to a
+   * directory.
+   */
+  @Test
+  public void testOverwriteDirectory() {
+    String input = "/FolderB";
+    try {
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "This is not a file");
+    }
+  }
+
+  /**
+   * It would test the case that the input is full path and also need to create new file to
+   * overwrite.
+   */
+  @Test
+  public void testInputIsFullPathAndCreateNewFile() {
+    String input = "/FolderA/FileB";
+    String[] inputForList = {"/FolderA"};
+    String[] inputForConcatenate = {"/FolderA/FileB"};
+    try {
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      assertEquals(ls.execute(inputForList, tracker), "FolderA:FileA FileB");
+      assertEquals(cat.execute(inputForConcatenate, tracker), "Result from other commands");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+
+  /**
+   * It would test the case that the input is full path and overwrite a file that have already
+   * existed with the string. existed.
+   */
+  @Test
+  public void testInputIsFullPathAndOverwriteExistingFile() {
+    String input = "/FolderA/FileA";
+    String[] inputForList = {"/FolderA"};
+    String[] inputForConcatenate = {"/FolderA/FileA"};
+    try {
+      assertEquals(cat.execute(inputForConcatenate, tracker), "I am A");
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      assertEquals(ls.execute(inputForList, tracker), "FolderA:FileA");
+      assertEquals(cat.execute(inputForConcatenate, tracker), "Result from other commands");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+
+  /**
+   * It would test if the input is relative path and also need to create new file to overwrite.
+   */
+  @Test
+  public void testInputIsRelativePathAndCreateNewFile() {
+    String input = "FolderA/FileB";
+    String[] inputForList = {"/FolderA"};
+    String[] inputForConcatenate = {"/FolderA/FileB"};
+    try {
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      assertEquals(ls.execute(inputForList, tracker), "FolderA:FileA FileB");
+      assertEquals(cat.execute(inputForConcatenate, tracker), "Result from other commands");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+
+  /**
+   * It would test the case that the input is relative path and overwrite a file that have already
+   * existed with the string.
+   */
+  @Test
+  public void testInputIsRelativePathAndOverwriteExistingFile() {
+    String input = "FolderA/FileA";
+    String[] inputForList = {"/FolderA"};
+    String[] inputForConcatenate = {"/FolderA/FileA"};
+    try {
+      assertEquals(cat.execute(inputForConcatenate, tracker), "I am A");
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      assertEquals(ls.execute(inputForList, tracker), "FolderA:FileA");
+      assertEquals(cat.execute(inputForConcatenate, tracker), "Result from other commands");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the name of directory has
+   * invalid characters.
+   */
+
+  @Test
+  public void testFileNameContainsInvalidCharacterPart1() {
+    try {
+      String input = "FolderA/Fi le";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File!";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File@";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File#";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the name of directory has
+   * invalid characters.
+   */
+  @Test
+  public void testFileNameContainsInvalidCharacterPart2() {
+    try {
+      String input = "FolderA/File$";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File%";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File^";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File&";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the name of directory has
+   * invalid characters.
+   */
+  @Test
+  public void testFileNameContainsInvalidCharacterPart3() {
+    try {
+      String input = "FolderA/File*";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File(";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File)";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File{";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the name of directory has
+   * invalid characters.
+   */
+  @Test
+  public void testFileNameContainsInvalidCharacterPart4() {
+    try {
+      String input = "FolderA/File}";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File~";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File|";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File>";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+  }
+
+  /**
+   * It would test whether the command throws the correct exception if the name of directory has
+   * invalid characters.
+   */
+  @Test
+  public void testFileNameContainsInvalidCharacterPart5() {
+    try {
+      String input = "FolderA/File<";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+    try {
+      String input = "FolderA/File?";
+      RedirectOverwrite.execute("Result from other commands", input, tracker);
+      fail("No exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The filename contains invalid character");
+    }
+  }
+}

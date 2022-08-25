@@ -1,0 +1,59 @@
+// **********************************************************
+// Assignment2:
+// Student1: Dezhi Ren
+// UTORID user_name: rendezhi
+// UT Student #: 1005736795
+// Author: Ren, Dezhi
+//
+// Student1: Yuanqian Fang
+// UTORID user_name: fangyu29
+// UT Student #: 1006619919
+// Author: Yuanqian Fang
+//
+// Student3: Du Han
+// UTORID user_name: handu
+// UT Student #: 1005681727
+// Author: Du Han
+//
+//
+//
+// Honor Code: I pledge that this program represents my own
+// program code and that I have coded on my own. I received
+// help from no one in designing and debugging my program.
+// I have also read the plagiarism section in the course info
+// sheet of CSC B07 and understand the consequences.
+// *********************************************************
+package driver;
+
+import java.util.Scanner;
+import command.Exit;
+import nodetype.*;
+
+//import jdk.internal.util.xml.impl.Input;
+//
+public class JShell {
+	public static void main(String[] args) {
+		boolean swc = true;
+		InputInterpreter interpreter = new InputInterpreter();
+		Directory root = new Directory(null, "/");
+		interpreter.tracker = new Tracker();
+		interpreter.tracker.setRoot_directory(root);
+		interpreter.tracker.setCurrent_directory(root);
+		interpreter.initializeCommandHashMap();
+		while (swc) {
+			String input;
+			Scanner in = new Scanner(System.in);
+			System.out.print("/#: ");
+			input = in.nextLine();
+			if (input.trim().equals("exit")) {
+				swc = Exit.exit(swc);
+			} else
+				interpreter.interprete(input);
+		}
+//		
+//
+//
+//
+	}
+
+}

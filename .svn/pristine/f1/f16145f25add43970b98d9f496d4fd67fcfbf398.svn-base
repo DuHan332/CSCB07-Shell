@@ -1,0 +1,12 @@
+What did I work on in the last three days?, 
+    - Create CopyURL class and test it simply.
+    - Modify the InputInterpreter class to make it compatible with the new 
+      version of LoadJShell commands
+
+What do I plan to work in the next three days?
+	- Write all the test case for the command I have implement.
+	- Write Javadoc for new class I have written in Sprint2.
+	- Format all the class.
+
+Am I blocked on anything?
+    - how to setup the test status for each command.

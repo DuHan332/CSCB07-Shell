@@ -1,0 +1,11 @@
+What did I work on in the last three days?, 
+	- work on list command to satisify the redirect function
+	- work on list command to satisify the "-R" function
+	- work on Echo command for new design
+
+What do I plan to work in the next three days?
+	- modify Manual class to do not save manuals in this class
+
+Am I blocked on anything?
+	- where should I save my manuals for every command?
+    - how could I draw the tree for our filesystem

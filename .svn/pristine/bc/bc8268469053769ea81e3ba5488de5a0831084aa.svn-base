@@ -1,0 +1,32 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content for command
+ * Concatenate.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForConcatenate implements Output {
+
+  /**
+   * The function would print the concatenated content of files with 3 blank line for each content
+   * of file.
+   * 
+   * @param content the string received from concatenate command
+   */
+  public void giveOutput(String content) {
+    if (content.equals("")) {
+      return;
+    }
+    String[] list = content.split("\r");
+    for (String message : list) {
+      System.out.println(message);
+      System.out.println();
+      System.out.println();
+      System.out.println();
+    }
+  }
+
+}

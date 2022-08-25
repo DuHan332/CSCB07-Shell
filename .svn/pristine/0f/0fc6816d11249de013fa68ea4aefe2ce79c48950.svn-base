@@ -1,0 +1,9 @@
+package outputformatter;
+
+public class OutputForPush implements Output {
+
+  public void giveOutput(String content) {
+    if (content.equals("")) 
+      return;
+  }
+}

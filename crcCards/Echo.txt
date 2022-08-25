@@ -1,0 +1,13 @@
+Class name: Echo
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* It appends or overwrites a string to a file/path depending on the user's 
+  input. If specified file/path does not exist,it will create a text file with 
+  the string in it.
+	
+Collaborators:
+* File
+* EchoOverwrite
+* EchoAppend

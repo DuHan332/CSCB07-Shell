@@ -1,0 +1,46 @@
+//Sprint 3 Backlog
+
+November 4th to November 10th 
+
+
+User Stories from Product Backlog that we will address in this sprint:
+a) As a user, I want to quit the program.
+b) As a user, I want my input to be interpreted.    
+c) As a user, I want to see what I typed.  
+d) As a user, I want to create a file with specific string.  
+
+Specific tasks to be accomplished:
+a-1. (Exit) Modify the code for Exit class so that it will be fit for command 
+            interface.
+
+b-1. (InputInterpreter) Modify the function so that it will not delete the space
+                        that user typed in their string for echo command.
+b-2. (InpurInterpreter) Write a helper function that concatenate the string as a
+                        complete parameter.
+                        
+c-1. (Echo) Modify the execute function so that it will call overwrite or append
+            correctly for specific parameter.
+
+d-1. (EchoOverwrite) Modify the EchoOverwrite class to make it work for creating
+                     a new file.
+
+u-1. Ask problems on piazza if we are confused with any definition.
+v-1. Monitor piazza everyday to meet the new requirements of customers 
+     (instructor or TAs)                    
+w-1. Format the code for each class to fit the java code format.
+x-1. Write javaDoc for all the class that assigned to each person in previous 
+     Sprints.
+y-1. Test the whole project and fix bug.
+z-1. Prepare to show our demo to TA.
+
+These tasks are assigned as follows:
+
+User: Du Han
+Tasks: u-1, v-1, w-1, x-1, y-1, z-1, a-1, c-1
+
+User: Dezhi Ren
+Tasks: u-1, v-1, w-1, x-1, y-1, z-1, b-1, b-2
+
+User: Yuanqian Fang
+Tasks: u-1, v-1, w-1, x-1, y-1, z-1, d-1
+

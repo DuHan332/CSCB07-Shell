@@ -1,0 +1,10 @@
+Class name: Concatenate
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Display contents of files in the Shell
+	
+Collaborators:
+* File
+* FindPath

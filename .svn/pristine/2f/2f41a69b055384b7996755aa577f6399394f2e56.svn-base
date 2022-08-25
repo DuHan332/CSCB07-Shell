@@ -1,0 +1,13 @@
+What did I work on in the last three days?
+    - finished the classes of RedirectAppend and RedirectOverwrite
+    - modified some codes in the class of MakeDirectory
+    - updated the previous CRC cards and added new CRC cards
+    - wrote base codes for class of RemoveDirectory
+
+What do I plan to work in the next three days?
+	- continue to work on the class of RemoveDirectory 
+	- continue to work on the class of MakeDirectory
+	- write the JavaDoc
+	
+Am I blocked on anything?
+    - don't know how to write JUnit Test for some complex functions

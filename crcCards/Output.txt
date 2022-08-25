@@ -1,0 +1,8 @@
+Class name: Output		
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Print result of the function that needs to print
+	
+Collaborators:

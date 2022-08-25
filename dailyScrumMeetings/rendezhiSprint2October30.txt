@@ -1,0 +1,16 @@
+What did I work on in the last three days?
+    - Distribute work for Sprint2 and discuss CRC cards with the team
+    - Test the part of the project that complete in Sprint1
+    - Brainstormed redesign ideas with team for how to correctly interpret
+      user's input with the new condition in Sprint2.
+    - Explore how each command in assignment handout acts in PowerShell to get 
+      an example of how our program should be like 
+
+What do I plan to work in the next three days?
+    - Finish the class that I was assigned in Sprint2
+    - Improve the InputInterpreter so that it can take in String as parameter
+    - Modify tracker to track the stack of directory
+
+Am I blocked on anything?
+    - How should I tell the different from String input and address input 
+      correctly

@@ -1,0 +1,224 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.Search;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+import nodetype.File;
+
+public class SearchTest {
+
+  private Search search;
+  private Directory root;
+  private Tracker tracker;
+
+  @Before
+  public void setUp() {
+    search = new Search();
+    root = new Directory(null, "/");
+    Directory directoryA = new Directory(root, "FolderA");
+    root.getSub().add(directoryA);
+
+    File fileA = new File("I am A", directoryA, "FileA");
+    directoryA.getSub().add(fileA);
+
+    Directory directoryB = new Directory(root, "FolderB");
+    root.getSub().add(directoryB);
+
+    Directory directoryC = new Directory(directoryB, "FolderC");
+    directoryB.getSub().add(directoryC);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(root.getSub().get(1).getName(), "FolderB");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(0).getName(), "FileA");
+    assertEquals(((Directory) root.getSub().get(1)).getSub().get(0).getName(), "FolderC");
+  }
+
+  /**
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "FolderA");
+    assertEquals(tracker.getRootDirectory().getSub().get(1).getName(), "FolderB");
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for losing parameter
+   */
+  @Test
+  public void testSearchForLosingPathParameter() {
+    String[] parameter = new String[4];
+    parameter[0] = "-type";
+    parameter[1] = "d";
+    parameter[2] = "-name";
+    parameter[3] = "\"FileA\"";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Lossing path parameter");
+    }
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for wrong number of type
+   * parameter
+   */
+  @Test
+  public void testSearchForWrongNumberOfTypeParameter() {
+    String[] parameter = new String[6];
+    parameter[0] = "\"FileA\"";
+    parameter[1] = "/FolderA";
+    parameter[2] = "-type";
+    parameter[3] = "d";
+    parameter[4] = "f";
+    parameter[5] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The type parameter is wrong because there is 2 type parameter");
+    }
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for wrong number of name
+   * parameter
+   */
+  @Test
+  public void testSearchForWrongNumberOfNameParameter() {
+    String[] parameter = new String[6];
+    parameter[0] = "\"DirectoryA\"";
+    parameter[1] = "\"DirectoryB\"";
+    parameter[2] = "/";
+    parameter[3] = "-type";
+    parameter[4] = "d";
+    parameter[5] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The name parameter is wrong because there is 2 name parameter");
+    }
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for wrong path
+   */
+  @Test
+  public void testSearchForWrongPath() {
+    String[] parameter = new String[7];
+    parameter[0] = "\"DirectoryA\"";
+    parameter[1] = "/";
+    parameter[2] = "/FolderC";
+    parameter[3] = "/FolderA";
+    parameter[4] = "-type";
+    parameter[5] = "d";
+    parameter[6] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The path: /FolderC is an invalid path");
+    }
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for invalid name
+   */
+  @Test
+  public void testSearchForInvalidName() {
+    String[] parameter = new String[6];
+    parameter[0] = "\"DirectoryA";
+    parameter[1] = "/";
+    parameter[2] = "/FolderA";
+    parameter[3] = "-type";
+    parameter[4] = "d";
+    parameter[5] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The name parameter is \"DirectoryA invalid");
+    }
+  }
+
+  /**
+   * It would test whether the Search return the exception as wanted for invalid type
+   */
+  @Test
+  public void testSearchForInvalidType() {
+    String[] parameter = new String[6];
+    parameter[0] = "\"DirectoryA\"";
+    parameter[1] = "/";
+    parameter[2] = "/FolderA";
+    parameter[3] = "-type";
+    parameter[4] = "k";
+    parameter[5] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The type parameter is k invalid");
+    }
+  }
+
+  /**
+   * It would test if the Search correctly return the result if it the item is not found in the
+   * given paths
+   */
+  @Test
+  public void testSearchWithNotFoundResult() {
+    String[] parameter = new String[6];
+    parameter[0] = "\"FolderA\"";
+    parameter[1] = "/FolderB";
+    parameter[2] = "/FolderA";
+    parameter[3] = "-type";
+    parameter[4] = "d";
+    parameter[5] = "-name";
+    try {
+      search.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The directory FolderA is not found in the given paths");
+    }
+  }
+
+  /**
+   * It would test if the Search correctly return the result if it the item is not found in the
+   * given paths
+   */
+  @Test
+  public void testSearchWithFoundResult() throws SystemErrorException {
+    String[] parameter = new String[6];
+    parameter[0] = "\"FolderA\"";
+    parameter[1] = "/FolderB";
+    parameter[2] = "/";
+    parameter[3] = "-type";
+    parameter[4] = "d";
+    parameter[5] = "-name";
+    assertEquals(search.execute(parameter, tracker),
+        "The directory \"FolderA\" is found in the path: /");
+  }
+
+  /**
+   * It would test if the MoveItem return the manual of itself
+   */
+  @Test
+  public void testManual() {
+    assertEquals(search.getManual(),
+        "search PATH ... -type [f|d] -name EXPRESSION:\nThis "
+            + "command would search the files or directories (type indicated by [f|d])"
+            + "\nwhose names are exactly EXPRESSION in the PATHes, which could be relative");
+  }
+}

@@ -1,0 +1,18 @@
+package outputformatter;
+
+public class OutputForConcatenate implements Output{
+  
+  public void giveOutput(String content) {
+	  if (content.equals("")) {
+	      return;
+	  }
+    String[] list = content.split("\r");
+    for (String message :list) {
+      System.out.println(message);
+      System.out.println();
+      System.out.println();
+      System.out.println();
+      } 
+  }
+
+}

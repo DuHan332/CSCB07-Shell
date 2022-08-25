@@ -1,0 +1,15 @@
+As a user, I want to store the result of my command into a file.        3-4Hours
+As a user, I want to delete the directory.                                2Hours
+As a user, I want to create directories as many as I want.                2Hours
+As a user, I want to see what is in the directories or what is in their 
+sub directories.                                                          5Hours
+As a user, I want to move the item into another directory.                3Hours
+As a user, I want to copy the item into another directory.                5Hours
+As a user, I want to see the content of files as many as I want.          3Hours
+As a user, I want to download the file from a link and save it into       
+the current directory.                                                    5Hours
+As a user, I want to know how to use a specific command in JShell        0.5Hour
+As a user, I want to save the current status of JShell.                  2.5days
+As a user, I want to load the status of JShell I saved.                  2.5days
+As a user, I want to search the item in some specific path.               4Hours
+As a user, I want to view the JShell system as a concrete graph           5Hours

@@ -1,0 +1,21 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public class PopDirectory implements Commands{
+
+  public String execute(String[] parameter, Tracker tracker) throws SystemErrorException {
+    if (parameter.length != 0) {
+      throw new SystemErrorException("Command \"pop\" cannot take parameter.");
+    }else if (tracker.getStack().size() == 0) {
+      throw new SystemErrorException("The stack is empty.");
+    }else {
+      tracker.setCurrent_directory(tracker.getStack().get(tracker.getStack().size() - 1));
+      tracker.getStack().remove(tracker.getStack().size() - 1);
+    }
+    
+    return "";
+  }
+
+}

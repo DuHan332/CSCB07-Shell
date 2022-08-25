@@ -1,0 +1,72 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+
+public class Echo implements Commands{
+	public String execute(String[] input, Tracker track) throws SystemErrorException {
+		String[] newinput = modifyParameterForEcho(input);
+		if(newinput.length==0){
+			throw new SystemErrorException("must have at least one parameter");
+		}
+		if(newinput.length==1){
+			if(isSurrounded(newinput[0])){
+				return newinput[0];
+			}
+			throw new SystemErrorException("first parameter should be surrounded by quotations");
+		}
+		if(newinput.length==2) {
+			throw new SystemErrorException("two parameters is not acceptable");
+		}
+		if(newinput.length==3) {
+			if(isSurrounded(newinput[0])) {
+				if(newinput[1].equals(">")) {
+					EchoOverwrite overwrite = new EchoOverwrite();
+					overwrite.overwrite(newinput[0], newinput[2], track);
+					return "";
+				}
+				else if(newinput[1].equals(">>")) {
+				  EchoAppend append = new EchoAppend();
+                  append.append(newinput[0], newinput[2], track);
+					return "";
+					//调用并返回EchoAppend,参数是input[0](字符串)和input[2](路径)
+				}
+				
+			}
+			throw new SystemErrorException("first parameter should be surrounded by quotations");
+		}
+		throw new SystemErrorException("too many parameters");
+	}
+	
+	
+	private boolean isSurrounded(String input) {
+		String first = input.substring(0,1);
+		String last = input.substring(input.length()-1,input.length());					
+		if(first.equals("\"")&&last.equals("\"")){
+			return true;
+		}
+		return false;
+	}
+	
+	public static String[] modifyParameterForEcho(String[] parameter) {
+	    String str = new String();
+	    str = parameter[0];
+	    int i=0;
+	    for (i=1; i< parameter.length && !parameter[i].substring(0, 1).equals(">"); i++) {
+	        str = str + " " +parameter[i];
+	    }
+	    if (!str.equals(parameter[0])) {
+	      String[] modifiedParameter = new String[parameter.length - i + 1];
+	      modifiedParameter[0] = str;
+	      System.out.println(modifiedParameter[0]);
+	      System.out.println(i);
+	      System.out.println(modifiedParameter.length);
+	      System.arraycopy(parameter, i, modifiedParameter, 1, modifiedParameter.length-1);
+	      return modifiedParameter;
+	    }
+	    return parameter;
+	  }
+
+
+}

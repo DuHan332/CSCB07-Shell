@@ -1,0 +1,39 @@
+package driver;
+import outputformatter.*;
+import java.util.HashMap;
+
+public class GiveOutput {
+  private HashMap<String, String> outputHashMap = new HashMap<String, String>();
+  //private errorChecker checker = new errorChecker();
+  
+  public void printOutput(String commandName, String content) {
+    String outputForCommand = outputHashMap.get(commandName);  
+    //checker.initializeErrorHashMap;
+    try {
+      Output output = (Output) Class.forName(outputForCommand).newInstance();
+      String result = content;
+      output.giveOutput(result);
+    } catch (InstantiationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  public void initializeOutputHashMap() {
+    this.outputHashMap.put("cd", "outputformatter.OutputForChangeDirectory");
+    this.outputHashMap.put("exit", "outputformatter.OutputForExit");
+    this.outputHashMap.put("ls", "outputformatter.OutputForList");
+    this.outputHashMap.put("mkdir", "outputformatter.OutputForMakeDirectory");
+    this.outputHashMap.put("pwd", "outputformatter.OutputForPrintWorkingDirectory");
+    //TODO: add more in Sprint2
+    
+    this.outputHashMap.put("general", "outputformatter.OutputForGeneralError");
+    
+  }
+}

@@ -1,0 +1,14 @@
+Class name: PushDirectory
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Saves	the	current	working	directory by pushing onto directory stack 
+* Changes the new current working directory	to directory corresponding to user's
+  input
+	
+Collaborators:
+* ChangeDirectory
+* Directory
+* Tracker
+* FindPath

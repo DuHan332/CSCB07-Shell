@@ -1,0 +1,191 @@
+package command;
+
+import java.util.ArrayList;
+import nodetype.*;
+import driver.Tracker;
+import exception.SystemErrorException;
+import helper.*;
+
+/**
+ * This class is implemented from from interface Commands and is able to create new directories
+ * based on user's input.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class MakeDirectory implements Commands {
+  /**
+   * a Directory represents the current directory
+   */
+  private Directory currentdirectory;
+  /**
+   * a Directory represents the root
+   */
+  private Directory root;
+
+  /**
+   * This function would check the length of input and throws error if the length doesn't equal to
+   * 2. The the function would call another function named mkdir. The function returns empty string
+   * if creating directories successfully. The function throws error corresponding to what mkdir
+   * returns.
+   * 
+   * @param input input from the user
+   * @param track a Tracker that track the root directory and current directory
+   * @return an empty string
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    this.currentdirectory = track.getCurrent_directory();
+    this.root = track.getRoot_directory();
+    int i = 0;
+    while (i < input.length) {
+      if (mkdir(input[i]) == 1) {
+        i++;
+      }
+      if (mkdir(input[i]) == 2) {
+        throw new SystemErrorException(
+            "The" + String.valueOf(i + 1) + "th directory has already existed");
+      }
+      if (mkdir(input[i]) == 3) {
+        throw new SystemErrorException("The" + String.valueOf(i + 1) + "th path doesn't exsit");
+      }
+      if (mkdir(input[i]) == 4) {
+        throw new SystemErrorException(
+            "The" + String.valueOf(i + 1) + "th directory's name contains invalid character");
+      }
+    }
+    return "";
+  }
+
+  /**
+   * This function would check whether the directory that user wants to create exists in the current
+   * directory.
+   * 
+   * @param directory current directory that need to be checked
+   * @param to_plug the name of directory that user wants to create
+   * @return true or false
+   */
+  private boolean Is_exist(Directory diretory, String to_plug) {
+    boolean result = false;
+    for (JNode s : diretory.getSub()) {
+      if (to_plug.equals(s.getName())) {
+        result = true;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * This function transform a String that contains the information of path to an ArrayList of
+   * String.
+   * 
+   * @param path a String that contains the information of path
+   * @return an ArrayList of String that stores name of every directory appears in the path
+   */
+  private ArrayList<String> path_to_arraylist(String path) {
+    String[] sub_path = path.split("/");
+    ArrayList<String> result = new ArrayList<>();
+    for (String s : sub_path) {
+      result.add(s);
+    }
+    if (result.get(0).equals(""))
+      result.remove(0);
+    return result;
+  }
+
+  /**
+   * This function would add the new directory to its root directory's sub.
+   * 
+   * @param directory a directory that need to be added with a new directory
+   * @param name a string that stands for the name of a new directory
+   */
+  private void add(Directory directory, String name) {
+    JNode new_thing = new Directory(directory, name);
+    ArrayList<JNode> sub = new ArrayList<JNode>();
+    sub = directory.getSub();
+    sub.add(new_thing);
+    directory.setSub(sub);
+  }
+
+  /**
+   * This function would first call the function named check_name to check whether the name of
+   * directory contains invalid characters and then call a helper function of findpath to check
+   * whether the path exists or not and it would call Is_exist to check whether the directory that
+   * user wants to add exists or not. If it doesn't find anything wrong, it would create a new
+   * directory and return an integer to show that the directory has been created. Otherwise, it
+   * would return integers to show different types of error.
+   * 
+   * @param directory a directory that stands for root or current directory
+   * @param dir a String of the name of directory that user wants to add
+   * @return integers to show different types of error happens or the directory has been created
+   */
+  private int check_add(Directory directory, String dir) {
+    if (check_name(dir) == true)
+      return 4;
+    ArrayList<String> temp = path_to_arraylist(dir);
+    String need_add = temp.get(temp.size() - 1);
+    temp.remove(temp.size() - 1);
+    JNode return_directory = FindPath.findpath(temp, directory);
+    if (return_directory != null && return_directory.getIs_directory() == true) {
+      if (Is_exist((Directory) return_directory, need_add) == false) {
+        add((Directory) return_directory, need_add);
+        return 1;
+      } else
+        return 2;
+    } else
+      return 3;
+  }
+
+  /**
+   * This function would judge the path the user put in is an absolute path or a relative path and
+   * then call the function of check_add
+   * 
+   * @param dir a String of the name of directory that user wants to add
+   * @return integers depends on what check_add returns
+   */
+
+  private int mkdir(String dir) {
+    if (dir.substring(0, 1).equals("/") == false) {
+      return check_add(currentdirectory, dir);
+    } else {
+      return check_add(root, dir);
+    }
+  }
+
+  /**
+   * This function would check the whether a string contains invalid character.
+   * 
+   * @param name a String that used to name a directory
+   * @return true or false to represent whether the string contains invalid character
+   */
+  private boolean check_name(String name) {
+    boolean contain_invalid = false;
+    ArrayList<String> char_table = new ArrayList<String>();
+    char_table.add(" ");
+    char_table.add("/");
+    char_table.add(".");
+    char_table.add("!");
+    char_table.add("@");
+    char_table.add("#");
+    char_table.add("$");
+    char_table.add("%");
+    char_table.add("^");
+    char_table.add("&");
+    char_table.add("*");
+    char_table.add("(");
+    char_table.add(")");
+    char_table.add("{");
+    char_table.add("}");
+    char_table.add("~");
+    char_table.add("|");
+    char_table.add("<");
+    char_table.add(">");
+    char_table.add("?");
+    for (String s : char_table) {
+      contain_invalid = name.contains(s);
+    }
+    return contain_invalid;
+  }
+}
+
+

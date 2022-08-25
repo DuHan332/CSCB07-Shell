@@ -1,0 +1,9 @@
+Class name: JNode			
+Parent class: 
+Subclasses: File, Directory
+
+Responsibilities:
+* to hold a collection of files/directories 
+* and the ability to link with other nodes
+	
+Collaborators:

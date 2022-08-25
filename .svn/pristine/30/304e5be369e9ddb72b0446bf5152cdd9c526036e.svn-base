@@ -1,0 +1,44 @@
+package driver;
+import nodetype.*;
+
+
+public class InputInterpreter {
+  private Directory current_directory;
+  private Directory root_directory;
+  
+  public Directory getRoot_directory() {
+    return root_directory;
+  }
+
+  public void setRoot_directory(Directory root_directory) {
+    this.root_directory = root_directory;
+  }
+
+  public Directory getCurrent_directory() {
+    return current_directory;
+  }
+
+  public void setCurrent_directory(Directory current_directory) {
+    this.current_directory = current_directory;
+  }
+
+  public void interprete(String input) {
+    String[] inputlist = input.trim().split(" +");
+    if (inputlist[0].equals("exit")){
+        //call exit
+    }else if (inputlist[0].equals("mkdir")) {
+      //call mkdir
+    }else if (inputlist[0].equals("cd")) {
+      //call cd
+    }else if (inputlist[0].equals("ls")) {
+      //giveOutputForFunction(ls, List(input))
+    }else if (inputlist[0].equals("pwd")) {
+      //giveOutputForFunction(pwd, List(input))
+    }else {
+      //Output.giveOurputForGeneralError();
+    }
+    //TODO: More function to be implemented in Sprint2
+    
+  }
+  
+}

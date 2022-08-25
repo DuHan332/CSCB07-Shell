@@ -1,0 +1,10 @@
+Class name: EchoOverwrite	
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Overwrite a string to a file.
+	
+Collaborators:
+* File
+* FindPath

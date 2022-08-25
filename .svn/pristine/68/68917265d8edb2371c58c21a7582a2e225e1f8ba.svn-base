@@ -1,0 +1,56 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import nodetype.*;
+import helper.FindPath;
+
+public class EchoAppend {
+    public String overwrite(String input_content, String path, Tracker tracker){
+      String content = input_content.substring(1,input_content.length());
+      ArrayList<String> full_path = path_to_arraylist(path);
+      ArrayList<String> sub_path = full_path;
+      String filename = full_path.get(full_path.size()-1);
+      sub_path.remove(sub_path.size()-1); 
+      
+       if(path.substring(0,1).equals("/")==false){
+         return echo_append(content,filename,full_path,sub_path,tracker.getCurrent_directory());
+       }
+       else {
+         return echo_append(content,filename,full_path,sub_path,tracker.getRoot_directory());
+       }
+}
+      
+    private String echo_append(String content,String filename, ArrayList<String> full_path,ArrayList<String> sub_path, Directory directory){
+      if(FindPath.findpath(full_path, directory)!=null) {
+        if(FindPath.findpath(full_path, directory).getIs_directory()==false){
+          File return_outfile = (File) FindPath.findpath(full_path, directory);
+         return_outfile.setContent(return_outfile.getContent().concat(content));
+            return "Append successful";
+        }
+        else {
+          return "this is not a file";
+        }
+      }
+      else { 
+        if(FindPath.findpath(sub_path, directory)!=null){
+          if(FindPath.findpath(full_path, directory).getIs_directory()==true){
+            File outfile = new File(content,(Directory)FindPath.findpath(full_path, directory),filename);
+            return "create a file and append successful";
+          }
+          else return "can't create a file under file";
+          }
+        else return "the path doesn't exit";
+      }
+    }
+        
+      private ArrayList<String> path_to_arraylist(String path){
+      String[] path_list = path.split("/");
+      ArrayList<String> result = new  ArrayList<>();
+      for(String s:path_list) {
+        result.add(s);
+      }
+      if(result.get(0).equals("")) result.remove(0);
+      return result;
+    }
+}

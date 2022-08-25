@@ -1,0 +1,13 @@
+package outputformatter;
+
+/**
+ * This class is the interface of output for specific command.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public interface Output {
+
+  public void giveOutput(String content);
+}

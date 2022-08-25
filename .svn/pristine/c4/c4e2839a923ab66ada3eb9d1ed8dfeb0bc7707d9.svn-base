@@ -1,0 +1,95 @@
+package command;
+import java.util.ArrayList;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+/**
+ * This function would return the inputed commands with indexes which is 
+ * recorded by the tracker in the interpreter. All inputed commands including 
+ * errors would be recorded and returned.
+ * @author Du Han
+ */
+public class History implements Commands {
+/**
+ * This function would call isNumeric to check if input is legal and call the 
+ * showhistory function with a number which is converted from input. If the 
+ * number is too big it would return a specific String that represents error
+ * @param input  the input from user
+ * @param track  a Tracker that contain history of input
+ * @return a String that contains the result of this function
+ * @throws SystemErrorException 
+ * 
+ */
+	public String execute(String[] input, Tracker track) throws SystemErrorException {
+		if (input.length==0)
+		{
+			return showhistory(track.getHistory(), track.getHistory().size());
+		}
+		else if(input.length==1) {
+			if(isNumeric(input[0])) {
+					if(input[0].length()>5) {
+						throw new SystemErrorException("parameter is too big");//parameter is too big
+					}
+					int number = Integer.valueOf(input[0]);
+					return showhistory(track.getHistory(), number);
+			}
+			else {
+				throw new SystemErrorException("parameter should be a number"); //parameter should be a number
+			}
+			
+		}
+		else {
+			throw new SystemErrorException("too many parameters");//too many parameters
+		}
+	}
+	
+	/**
+	 * This function would return a String that contains recent specific 
+	 * number of inputed commands. this number should be greater than 0,
+	 * it would return specific String that represents error if the number is
+	 * 0.
+	 * @param list  ArrayList that record inputed commands
+	 * @param number  the amount of commands should be returned.
+	 * @return  a String that contains recent specific  number of inputed 
+	 * commands or a String that represents error
+	 * @throws SystemErrorException 
+	 */
+	private static String showhistory(ArrayList<String> list, int number) throws SystemErrorException {
+		if(number == 0) {
+			throw new SystemErrorException("the parameter should be bigger than 0");//the parameter should be bigger than 0
+		}
+		else if (number > list.size())
+		{
+			return showhistory(list, list.size());
+		}
+		else {
+			StringBuilder result = new StringBuilder();
+			for (int i = 0; i<list.size();i++)
+			{
+				if(i>=(list.size()-number))
+				{
+				result.append(i+1);
+				result.append(". "+ list.get(i) + "\r");
+				}
+			}
+			String strresult = result.toString();
+			return strresult;
+		}		
+	}
+	
+	/**
+	 * This function would recognize if a String is a number
+	 * @param str  the String that needs to be recognized
+	 * @return  true or false
+	 */
+	private static boolean isNumeric(String str){
+	    for (int i= 0;i<str.length();i++){
+	        if (!Character.isDigit(str.charAt(i))){
+	            return false;
+	        }
+	    }
+	    return true;
+	 }
+
+}
+

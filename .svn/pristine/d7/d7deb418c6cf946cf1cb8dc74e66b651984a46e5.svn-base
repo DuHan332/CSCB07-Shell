@@ -1,0 +1,52 @@
+package driver;
+
+import exception.SystemErrorException;
+import helper.RedirectAppend;
+import helper.RedirectOverwrite;
+
+/**
+ * This class would format the output. Then it would print the output or call the redirectOverwrite
+ * or redirectAppend if users use redirection.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class GiveOutput {
+  /**
+   * The function would format the output and print it.
+   * 
+   * @param content the returned string from the command.
+   */
+  public void printOutput(String content) {
+    if (content.equals("")) {
+      return;
+    }
+    String[] outputList = content.split("\r");
+    if (!outputList[0].equals(""))
+      System.out.println(outputList[0]);
+    if (outputList.length == 2) {
+      System.err.println(outputList[1]);
+    }
+  }
+
+  /**
+   * The function would format the output and call redirectOverwrite or redirectAppend based on
+   * user's input.
+   * 
+   * @param content the returned string from the command.
+   */
+  public void redirectOutput(String content, String path, boolean isAppend, Tracker tracker)
+      throws SystemErrorException {
+    if (content.equals("")) {
+      return;
+    }
+    String output = content.split("\r")[0];
+    if (isAppend && !output.equals("")) {
+      RedirectAppend.execute(output, path, tracker);
+    } else {
+      RedirectOverwrite.execute(output, path, tracker);
+    }
+  }
+
+}

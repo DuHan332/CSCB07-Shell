@@ -1,0 +1,59 @@
+package command;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is able to load the contents of the specific file in the real file system and
+ * reinitialize everything that was saved previously into the file.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class LoadJShell {
+  /**
+   * This function would return the manual of this command.
+   * 
+   * @return a String that describes how to use this command.
+   */
+  public String getManual() {
+    String Manual = "loadJShell FileName:\nWhen the "
+        + "above command is typed,  JShell would load the contents of the FileName\n"
+        + "and reinitialize everything that was saved previously into the FileName."
+        + " This\nallows the user to start a new JShell session, type in load FileName "
+        + "and resume\nactivity from where it was left off previously. If it is not the "
+        + "first command\nthat is typed, this command would be disabled.";
+    return Manual;
+  }
+
+  /**
+   * 
+   * @param fileName a path the represents the file that user wants to load from
+   * @param tracker a Tracker that track the root directory, current directory and history of
+   *        commands that users used
+   * @return tracker a Tracker that contains the status saved in the previous time
+   * @throws SystemErrorException
+   * @exception Exception this exception is thrown if finding some error during loading and
+   *            interacting with real file system on the computer
+   */
+  static public Tracker execute(String[] fileName, Tracker tracker) throws SystemErrorException {
+    if (fileName.length != 1) {
+      throw new SystemErrorException("This command must take one argument");
+    }
+    if (tracker.getHistory().size() > 1) {
+      throw new SystemErrorException("You can use this command after using other commands already");
+    }
+    try {
+      FileInputStream fileIn = new FileInputStream(fileName[0]);
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      tracker = (Tracker) in.readObject();
+      in.close();
+      fileIn.close();
+      return tracker;
+    } catch (Exception e) {
+      throw new SystemErrorException("The path is not found or invalid");
+    }
+  }
+}

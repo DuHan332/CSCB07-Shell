@@ -1,0 +1,82 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public interface Commands {
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException;
+  public String getManual();
+}
+
+
+
+//public String getManual() {
+//  String Manual = "";
+//  return Manual;
+//}
+
+
+
+
+
+
+//List: "ls [PATH ¡­]:\n" + "If no paths are given, print "
+//    + "the contents (file or directory) of the current\ndirectory, "
+//    + "with a new line following each of the content (file or directory"
+//    + ").\nOtherwise, for each path p, the order listed:\nIf p "
+//    + "specifies a file, print p\nIf p specifies a directory, print p,"
+//    + " a colon, then the contents of that\ndirectory, then an extra "
+//    + "new line.\nIf p does not exist, print a suitable message.";
+//mkdir: "mkdir DIR1 DIR2:\n" + "This command takes in two"
+//    + " arguments only. Create directories, each of which\nmay be "
+//    + "relative to the current directory or may be a full path. If "
+//    + "creating\nDIR1 results in any kind of error, do not proceed with"
+//    + " creating DIR 2.\nHowever, if DIR1 was created successfully, "
+//    + "and DIR2 creation results in an\nerror, then give back an error " + "specfic to DIR2.";
+//cd: "cd DIR:\n" + "Change directory to DIR, which may be"
+//    + " relative to the current directory or\nmay be a full path. .. "
+//    + "means a parent directory and a . means the current \ndirectory.";
+// pwd :"pwd:\n" + "Print the current working directory " + "(including the whole" + " path).";
+//exit:  "exit:\nQuit the program";
+//pushd:  "pushd DIR:\n" + "Saves the current working "
+//    + "directory by pushing onto directory stack and then\nchanges the "
+//    + "new current working directory to " + "DIR.";
+//popd: "popd:\nRemove the top entry from the directory " + "stack, and cd into it.";
+//history : = "history [n]:\nThis command will print out "
+//    + "recent commands, one command per line.We can\ntruncate the "
+//    + "output by specifying a number n after the command to print\nthe "
+//    + "last n commands typed";
+//cat: "cat FILE1 [FILE2 ¡­]:\nDisplay the contents of "
+//    + "FILE1 and other files concatenated in the shell.";
+//echo: "echo STRING :\n print STRING on theshell.";
+//man : "man CMD [CMD2 ¡­]:\nPrint documentation for CMD " + "(s)";
+//curl :"curl URL:\nURL is a web address. Retrieve the file at that URL"
+//    + "and add it to the current\nworking directory.";
+//save:  "saveJShell FileName: \nWhen the above command is "
+//    + "typed, the entire state of the program would be\nwritten to the file "
+//    + "FileName. The file FileName is some file that is stored\non the actual "
+//    + "filesystem of computer.This command we enable users to save the\nsession"
+//    + " of the JShell before it is closed down. If file FileName does not\nexist,"
+//    + " it would create a file save.txt on computer that will save the session "
+//    + "\nof the JShell. If the above file exists on computer, this file would "
+//    + "be\noverwritten compleletly";
+//load:  "loadJShell FileName:\nWhen the "
+//    + "above command is typed,  JShell would load the contents of the FileName\n"
+//    + "and reinitialize everything that was saved previously into the FileName."
+//    + " This\nallows the user to start a new JShell session, type in load FileName "
+//    + "and resume\nactivity from where it was left off previously. If it is not the "
+//    + "first command\nthat is typed, this command would be disabled.";
+//search: "search PATH ... -type [f|d] -name EXPRESSION:\nThis "
+//    + "command would search the files or directories (type indicated by [f|d])"
+//    + "\nwhose names are exactly EXPRESSION in the PATHes, which could be relative"
+//    + "\npathes or full pathes";
+//tree:  "tree:\nThis command would start from the root directory "
+//    + "('\\') and display the entire\nfile system as a tree. For every level"
+//    + " of the tree, it would be indented by a\ntab character.";
+//move: "mv OLDPATH NEWPATH:\nMove item OLDPATH to NEWPATH. Both OLD-"
+//    + "PATH and NEWPATH may be relative to\nthe current directory or may be "
+//    + "fullpaths. If NEWPATH is a directory, move\nthe item into the directory."
+//copy: "cp OLDPATH NEWPATH:\nLike mv, but don¡¯t remove OLDPATH. "
+//    + "If OLDPATH is a directory, recursively\ncopy the contents.";
+//remove: "rm DIR:\nremoves the DIR from the file system. This also"
+//    + " removes all the children\nof DIR";

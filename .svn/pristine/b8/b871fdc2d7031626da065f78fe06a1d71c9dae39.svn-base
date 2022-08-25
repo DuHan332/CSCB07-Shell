@@ -1,0 +1,11 @@
+What did I work on in the last three days?, 
+    - create CopyItem class and MoveItem class
+    - Modify the GiveOutput class to make it compatible with the new version of
+      List commands
+
+What do I plan to work in the next three days?
+	- work on CopyURL class
+	- Create test class I am assigned.
+
+Am I blocked on anything?
+    - how to save a file from a given url.

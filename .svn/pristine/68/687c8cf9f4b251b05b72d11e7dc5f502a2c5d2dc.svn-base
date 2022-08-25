@@ -1,0 +1,9 @@
+Class name: Directory			
+Parent class: JNode
+Subclasses:
+
+Responsibilities:
+* specific unique location/path in file system, 
+* it can store directory or file within itself
+	
+Collaborators:

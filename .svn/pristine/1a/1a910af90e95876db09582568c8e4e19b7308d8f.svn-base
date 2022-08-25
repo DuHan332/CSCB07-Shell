@@ -1,0 +1,14 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public class CopyURL implements Commands {
+
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+}

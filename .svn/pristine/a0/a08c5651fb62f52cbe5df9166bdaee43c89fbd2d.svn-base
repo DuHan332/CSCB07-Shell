@@ -1,0 +1,29 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content 
+ * for command PrintWorkingDirectory.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForPrintWorkingDirectory implements Output {
+
+  /**
+   * The function would print the path of current directory.
+   * 
+   * @param content the string received from PrintWorkingDirectory command
+   */
+  public void giveOutput(String content) {
+    if (content.length() < 5 || !content.substring(0, 5).equals("Error")) {
+      System.out.println("Path:\n");
+      System.out.println(content);
+
+    } else {
+      System.out.println(content);
+    }
+
+  }
+
+}

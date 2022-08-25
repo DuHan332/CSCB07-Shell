@@ -1,0 +1,17 @@
+What did I work on in the last three days?
+    - fixed bugs in MakeDirectory
+    - wrote codes for classes of EchoAppend, EchoOverwrite
+    - make functions can throw errors when errors appear
+
+
+What do I plan to work in the next three days?
+	- fix bugs in classes of EchoAppend, EchoOverwrite
+	- write Javadoc for previous functions that have been done
+    - work on tasks that are in the Sprint3
+    - discuss with team members about how to improve our program
+    - prepare for showing demo on Thursday 
+
+Am I blocked on anything?
+	- don't know how to write good Javadoc for functions
+	- fail to add a new file to its root's sublist 
+ 

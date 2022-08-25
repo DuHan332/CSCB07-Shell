@@ -1,0 +1,131 @@
+package command;
+
+import java.util.ArrayList;
+
+import driver.Tracker;
+import nodetype.*;
+
+
+
+
+public class List implements Commands{
+	
+	public String execute(String[] input, Tracker track)
+	{
+		if(input.length==0)
+		{
+			return list(track.getCurrent_directory());
+		}
+		if(input.length==1)
+		{
+			return list(input[0], track.getRoot_directory(),
+					track.getRoot_directory());
+		}
+		else {
+		return "Error3";//too many parameters
+		}
+	}
+	
+	static private String list(String input, Directory rd, Directory cwd) {
+		if (input.substring(0, 1).equals("\\")) {
+			if (input.equals("\\"))
+			{
+				return list(rd);
+			}
+			String[] temp = input.split("\\\\");
+			ArrayList<String> path = new ArrayList<>();
+			for (String i:temp)
+			{
+				path.add(i);
+			}
+			path.remove(0);
+			JNode target = lsHelper(path, rd);
+			if (target == null)
+			{
+				return "Error1 "+input;//target directory DNE
+			}
+			else if(target.getIs_directory()==false)
+			{
+				return target.getName()+"\n";
+			}
+			else {
+			String result = listnodes((Directory) target);
+			return result;
+			}
+
+		} else
+		{
+			String[] temp2 = input.split("\\\\");
+			ArrayList<String> path2 = new ArrayList<>();
+			for (String i:temp2)
+			{
+				path2.add(i);
+			}
+			JNode target = lsHelper(path2, cwd);
+			if (target == null)
+			{
+				return "Error1 "+input;//target directory DNE
+			}
+			else if(target.getIs_directory()==false)
+			{
+				return target.getName()+"\n";
+			}
+			else {
+			String result2 = listnodes((Directory) target);
+			return result2;
+			}
+		}
+
+	}
+
+	static private String list(Directory cwd) {
+		String result3 = listnodes(cwd);
+		return result3;
+	}
+
+///////////////////////////////////////////////////////////////////////
+	static private JNode lsHelper(ArrayList<String> list,
+			Directory directory) {
+		if (list.isEmpty()) {
+			return directory;
+		} else {
+			for (JNode i : directory.getSub()) {
+				if (i.getName().equals(list.get(0))) {
+					if(i.getIs_directory()==false)
+					{
+						if (list.size()==1) 
+						{
+							return i;
+						}
+						else {
+							return null;
+						}
+					}
+					list.remove(0);
+					return lsHelper(list, (Directory) i);
+//					
+					
+				}
+			}
+			return null;
+		}
+	}
+	
+	static private String listnodes(Directory directory)
+	{
+		ArrayList<String> ctList = new ArrayList<String>();
+		for (JNode i : directory.getSub())
+		{
+			ctList.add(i.getName());
+		}
+		StringBuilder result = new StringBuilder();
+		for (String i : ctList)
+		{
+			result.append(i);
+			result.append("\n");
+		}
+		String strresult = result.toString();
+		return strresult;
+	}
+
+}

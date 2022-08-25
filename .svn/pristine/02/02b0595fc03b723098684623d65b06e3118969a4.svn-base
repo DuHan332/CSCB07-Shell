@@ -1,0 +1,38 @@
+package command;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import driver.Tracker;
+import exception.SystemErrorException;
+
+public class LoadJShell {
+  public String getManual() {
+    String Manual = "loadJShell FileName:\nWhen the "
+        + "above command is typed,  JShell would load the contents of the FileName\n"
+        + "and reinitialize everything that was saved previously into the FileName."
+        + " This\nallows the user to start a new JShell session, type in load FileName "
+        + "and resume\nactivity from where it was left off previously. If it is not the "
+        + "first command\nthat is typed, this command would be disabled.";
+    return Manual;
+  }
+
+  static public Tracker execute(String[] fileName, Tracker tracker) throws SystemErrorException {
+    if (fileName.length > 1) {
+      throw new SystemErrorException("This command can only take one argument");
+    }
+    if (tracker.getHistory().size() > 1) {
+      throw new SystemErrorException("You can use this command after using other commands already");
+    }
+    try {
+      FileInputStream fileIn = new FileInputStream(fileName[0]);
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      tracker = (Tracker) in.readObject();
+      in.close();
+      fileIn.close();
+      return tracker;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+}

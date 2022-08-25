@@ -1,0 +1,124 @@
+package test;
+import static org.junit.Assert.*;
+import nodetype.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.Concatenate;
+import driver.Tracker;
+import exception.SystemErrorException;
+/*
+ * For my tests, I choose to use integration testing, since this command is just show the contents
+ * of files which is a part of a file system so i choose to test them together to ensure no
+ * error occurs.
+ * 
+ * @author Du Han
+ */
+public class ConcatenateTest {
+  Directory root;
+  Concatenate cat;
+  Tracker tracker;
+  /*
+   * It would set up a tree and a tracker that track the file system to test
+   */
+  @Before
+  public void setUp() {
+    cat = new Concatenate();
+    root = new Directory(null, "/");
+    Directory directory = new Directory(root, "FolderA");
+    root.getSub().add(directory);
+
+    File file1 = new File("I am A", root, "FileA");
+    root.getSub().add(file1);
+
+    File file2 = new File("I am B", directory, "FileB");
+    directory.getSub().add(file2);
+
+    File file3 = new File("I am C", directory, "FileC");
+    directory.getSub().add(file3);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+  /*
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(root.getSub().get(01).getName(), "FileA");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(0).getName(), "FileB");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(1).getName(), "FileC");
+  }
+
+  /*
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "FolderA");
+  }
+  
+  /*
+   * These tests would test command for several conditions: no parameter, correct parameter with
+   * full path, correct parameter with relative path, more than one correct parameters, a series of
+   * parameters including incorrect parameter(the path does not exists) and single incorrect
+   * parameter(the target is not a file).Each input0-6 is one test for each case.
+   */
+  @Test
+  public void testConcatenate(){
+    String[] input0 = {};
+    try {
+      assertEquals(cat.execute(input0, tracker), "");
+      fail();
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "must have at least one parameter");
+    }
+    
+    String[] input1 = {"FileA"};
+    try {
+      assertEquals(cat.execute(input1, tracker), "I am A");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input2 = {"/FileA"};
+    try {
+      assertEquals(cat.execute(input2, tracker), "I am A");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input3 = {"FileA", "FolderA/FileB"};
+    try {
+      assertEquals(cat.execute(input3, tracker), "I am A\n\n\n\nI am B");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input4 = {"FileDNE"};
+    try {
+      assertEquals(cat.execute(input4, tracker), "\rFileDNE does not exist");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input5 = {"FileA","FileDNE","FileA"};
+    try {
+      assertEquals(cat.execute(input5, tracker), "I am A\rFileDNE does not exist");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+    
+    String[] input6 = {"FolderA"};
+    try {
+      assertEquals(cat.execute(input6, tracker), "\rFolderA is not a file");
+    } catch (SystemErrorException e) {
+      fail();
+    }
+  }
+  
+}

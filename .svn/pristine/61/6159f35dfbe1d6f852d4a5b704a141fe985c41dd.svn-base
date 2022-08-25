@@ -1,0 +1,122 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import exception.SystemErrorException;
+import helper.FindPath;
+import nodetype.*;
+
+public class Search implements Commands{
+
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    ArrayList<String> pathList = new ArrayList<String>();
+    String result = "";
+    String[] typeAndName;
+    pathList = chechValidityForInput(input);
+    typeAndName = getTypeAndName(pathList);
+    
+    for (String path: pathList) {
+      ArrayList<String> routeList = new ArrayList<String>();
+      String[] route = path.split("/");
+      for (String r:route) routeList.add(r);
+      if (route[0].equals("")) {
+        routeList.remove(0);
+        result = searchForWholeRoute(routeList, typeAndName, path, tracker);
+      }else result = searchForRelativeRoute(routeList, typeAndName, path, tracker);
+      if (!result.equals("file") && !result.equals("directory") || result.equals(path)) break;
+    }
+    if (result.equals("file") || result.equals("directory"))
+      throw new SystemErrorException("The " + result + " " + typeAndName[1]+ " is not found in the given paths");
+    if (pathList.contains(result))
+      throw new SystemErrorException("The path: "+ result + " is an invalid path");
+    return result;
+  }
+
+  private static ArrayList<String> chechValidityForInput(String[] input) throws SystemErrorException {
+    ArrayList<String> pathList = new ArrayList<String>();
+    boolean recordType=false;
+    int numberOfName=0, numberOfType=0;
+    for (String i: input) {
+      if (i.equals("-type")) {
+        recordType = true;
+      }else if (i.equals("-name")) {
+        recordType = false;
+      }else if (recordType) {
+        numberOfType++;
+      }else if (i.charAt(0) == '\"') {
+        numberOfName++;
+      }
+      pathList.add(i);
+    }    
+    if (numberOfType != 1) 
+      throw new SystemErrorException("The type parameter is wrong because there is "+numberOfType+" type parameter");
+    else if (numberOfName != 1) 
+      throw new SystemErrorException("The name parameter is wrong because there is "+numberOfName+" name parameter");
+    else if (pathList.size() < 5) 
+      throw new SystemErrorException("Lossing path parameter");
+    return pathList;
+  }
+  
+  private static String searchForWholeRoute(ArrayList<String> routeList, String[] typeAndName, String path, Tracker tracker){
+    String result = "";
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getRoot_directory());
+    if (typeAndName[0].equals("d"))
+      typeAndName[0] = "directory";
+    else typeAndName[0] = "file";
+    result = typeAndName[0];
+
+    if (target == null || !target.getIs_directory()) {
+      result = path;
+    }else{
+      Directory d = (Directory) target;
+      for (JNode sub:d.getSub())
+        if (sub.getName().equals(typeAndName[1]) && sub.getIs_directory() == typeAndName[0].equals("directory")) {   
+          result = "The item \"" + typeAndName[1] + "\" is found in the path: " + path;
+          break;
+        }
+    }
+    return result;
+  }
+  
+  private static String searchForRelativeRoute(ArrayList<String> routeList, String[] typeAndName, String path, Tracker tracker){
+    String result = "";
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getCurrent_directory());
+    if (typeAndName[0].equals("d"))
+      typeAndName[0] = "directory";
+    else typeAndName[0] = "file";
+    result = typeAndName[0];
+
+    if (target == null || !target.getIs_directory()) {
+      result = path;
+    }else{
+      Directory d = (Directory) target;
+      for (JNode sub:d.getSub())
+        if (sub.getName().equals(typeAndName[1]) && sub.getIs_directory() == typeAndName[0].equals("directory")) {   
+          result = "The item \"" + typeAndName[1] + "\" is found in the path: " + path;
+          break;
+        }
+    }
+    return result;
+  }
+  
+  private static String[] getTypeAndName(ArrayList<String> pathList) throws SystemErrorException {
+    String[] typeAndName = new String[2];
+    typeAndName[1] = pathList.remove(0);
+    if (typeAndName[1].length() < 2 || typeAndName[1].charAt(0) != '\"' ||typeAndName[1].charAt(typeAndName[1].length()-1) != '\"') {
+      throw new SystemErrorException("The name parameter is "+ typeAndName[1] +" invalid");
+    }else 
+      typeAndName[1] = typeAndName[1].substring(1, typeAndName[1].length()-1);
+    
+    pathList.remove(pathList.size()-1);
+    typeAndName[0] = pathList.remove(pathList.size()-1);
+    if (!typeAndName[0].equals("d") && !typeAndName[0].equals("f")) 
+      throw new SystemErrorException("The type parameter is "+ typeAndName[0] +" invalid");
+    pathList.remove(pathList.size()-1);
+    
+    return typeAndName;
+  }
+  
+}

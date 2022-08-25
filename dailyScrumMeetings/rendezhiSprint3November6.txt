@@ -1,0 +1,13 @@
+What did I work on in the last three days?
+    - Show the demo of our program to TA
+    - Write SprintBlacklog3
+    - Brainstormed redesign ideas with team for how to give the string to echo
+      command that does not break the string
+
+What do I plan to work in the next three days?
+    - Format the code that I write.
+    - Write Javadoc for the class that I implement.
+    - Test the complete project of our assignment.
+
+Am I blocked on anything?
+    - How to make the productblacklog more realistic.

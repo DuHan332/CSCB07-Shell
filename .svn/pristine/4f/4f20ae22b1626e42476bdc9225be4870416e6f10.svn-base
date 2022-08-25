@@ -1,0 +1,79 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.PrintWorkingDirectory;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+
+/**
+ * This class is used for testing the class of PrintWorkingDirectory, it will test whether the
+ * command throws the correct exception and whether it returns a correct result.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class PrintWorkingDirectoryTest {
+  Directory root;
+  PrintWorkingDirectory pwd;
+  Tracker tracker;
+
+  /**
+   * It would initialize the root and tracker used for testing.
+   */
+  @Before
+  public void setUp() {
+    pwd = new PrintWorkingDirectory();
+    root = new Directory(null, "/");
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  /**
+   * It would test if the command takes parameters.
+   */
+  @Test
+  public void testSystemErrorException() {
+    try {
+      String[] input = {"Something"};
+      pwd.execute(input, tracker);
+      fail("No Exception thrown");
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "This command can't take input");
+    }
+  }
+
+  /**
+   * It would test if the current directory is the root.
+   */
+  @Test
+  public void testPwdFromRoot() {
+    try {
+      String[] input = {};
+      assertEquals(pwd.execute(input, tracker), "/");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+
+  /**
+   * It would test if the user have changed the current directory to a specific directory.
+   */
+  @Test
+  public void testPwdCurrentDirectory() {
+    Directory directory1 = new Directory(root, "FolderA");
+    root.getSub().add(directory1);
+    Directory directory2 = new Directory(directory1, "FolderB");
+    directory1.getSub().add(directory2);
+    tracker.setCurrentDirectory(directory2);
+    try {
+      String[] input = {};
+      assertEquals(pwd.execute(input, tracker), "/FolderA/FolderB");
+    } catch (SystemErrorException e) {
+      fail("No exception should be thrown");
+    }
+  }
+}

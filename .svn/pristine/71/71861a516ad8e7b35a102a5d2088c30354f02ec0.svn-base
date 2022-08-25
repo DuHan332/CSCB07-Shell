@@ -1,0 +1,18 @@
+package driver;
+import java.util.HashMap;
+
+public class GiveOutput {
+  private HashMap<String, String> outputHashMap;
+  
+  
+  
+  public void initializeOutputHashMap() {
+    this.outputHashMap.put("cd", "command.ChangeDirectory");
+    this.outputHashMap.put("exit", "command.Exit");
+    this.outputHashMap.put("ls", "command.List");
+    this.outputHashMap.put("mkdir", "command.MakeDirectory");
+    this.outputHashMap.put("pwd", "command.PrintWorkingDirectory");
+    //TODO: add more in Sprint2
+    
+  }
+}

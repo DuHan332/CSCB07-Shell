@@ -1,0 +1,26 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content for
+ * command Manual.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForManual implements Output {
+
+  /**
+   * The function would print the concatenated content of command manual with a
+   * blank line for each content of command manual.
+   * 
+   * @param content the string received from manual command
+   */
+  public void giveOutput(String content) {
+    String[] list = content.split("\r");
+    for (String message : list) {
+      System.out.println(message);
+      System.out.println();
+    }
+  }
+}

@@ -1,0 +1,14 @@
+package command;
+
+public class Exit {
+	public static boolean exit(boolean swc)
+	{
+		if (swc == true)
+		{
+			return false;
+		}
+		else
+			return false;
+	}
+
+}

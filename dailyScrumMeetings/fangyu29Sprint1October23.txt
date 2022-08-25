@@ -1,0 +1,15 @@
+What did I work on in the last three days?
+    - discuss about CRC cards with team members
+    - typed the CRC cards and submitted to the repository
+    - discuss about the general ideas about how to build the JShell and deal 
+      with other command classes with other team members
+
+What do I plan to work in the next three days?
+    - plan to work on the codes for classes of JNode, Directory, File, 
+      MakeDirectory, and PrintWorkingDirectory
+    - communicate with other team member about what we can do to improve our 
+      design
+
+Am I blocked on anything?
+    - the design of classes that I am going to work on
+    - don't know where to start 

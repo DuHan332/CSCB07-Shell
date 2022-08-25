@@ -1,0 +1,10 @@
+What did I work on in the last three days?, 
+    - modify the InputInterpreter class to meet the the requirement
+    - Redesign the GiveOutput class to make it capable to redirect output.
+
+What do I plan to work in the next three days?
+	- work on moveItem and copyItem class
+	- Implement the change in GiveOutput class
+
+Am I blocked on anything?
+    - how to copy an directory and its content to another directory.

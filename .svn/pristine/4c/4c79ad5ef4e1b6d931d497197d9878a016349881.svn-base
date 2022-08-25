@@ -1,0 +1,32 @@
+package helper;
+import java.util.ArrayList;
+
+import nodetype.*;
+
+public class Findpath {
+	static public JNode findpath(ArrayList<String> list,
+			Directory directory) {
+		if (list.isEmpty()) {
+			return directory;
+		} else {
+			for (JNode i : directory.getSub()) {
+				if (i.getName().equals(list.get(0))) {
+					if(i.getIs_directory()==false)
+					{
+						if (list.size()==1) 
+						{
+							return i;
+						}
+						else {
+							return null;
+						}
+					}
+					list.remove(0);
+					return findpath(list, (Directory) i);							
+				}
+			}
+			return null;
+		}
+	}
+	
+}

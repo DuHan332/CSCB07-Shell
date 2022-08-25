@@ -1,0 +1,66 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import nodetype.*;
+import helper.FindPath;
+import exception.SystemErrorException;
+
+public class EchoAppend{
+    public void append(String input_content, String path, Tracker tracker) throws SystemErrorException{
+      String content = input_content.substring(1,input_content.length());
+      ArrayList<String> full_path = path_to_arraylist(path);
+      ArrayList<String> sub_path = new ArrayList<String>();
+      for(String s:full_path) {
+        sub_path.add(s);
+      }
+      String filename = full_path.get(full_path.size()-1);
+      sub_path.remove(sub_path.size()-1); 
+       if(path.substring(0,1).equals("/")==false){
+         int result = echo_append(content,filename,full_path,sub_path,tracker.getCurrent_directory());
+         if(result==2) throw new SystemErrorException("This is not a file");
+         if(result==4) throw new SystemErrorException("Not allowed to create a file in a file");
+         if(result==5) throw new SystemErrorException("The path doesn't exist");
+       }
+       else {
+         int result = echo_append(content,filename,full_path,sub_path,tracker.getRoot_directory());
+         if(result==2) throw new SystemErrorException("This is not a file");
+         if(result==4) throw new SystemErrorException("Not allowed to create a file in a file");
+         if(result==5) throw new SystemErrorException("The path doesn't exist");
+       }
+}
+      
+    private int echo_append(String content,String filename, ArrayList<String> full_path,ArrayList<String> sub_path, Directory directory){
+      if(FindPath.findpath(full_path, directory)!=null) {
+        if(FindPath.findpath(full_path, directory).getIs_directory()==false){
+          File return_outfile = (File) FindPath.findpath(full_path, directory);
+         return_outfile.setContent(return_outfile.getContent().concat(content));
+            return 1;// 成功
+        }
+        else {
+          return 2;//不是file
+        }
+      }
+      else { 
+        if(FindPath.findpath(sub_path, directory)!=null){
+          if(FindPath.findpath(full_path, directory).getIs_directory()==true){
+            File outfile = new File("",(Directory)FindPath.findpath(full_path, directory),filename);
+            outfile.setContent(content);
+            return 3; // create new and append 
+          }
+          else return 4; //在file 下能创建file
+          }
+        else return 5; // path doesn't exist
+      }
+    }
+        
+      private ArrayList<String> path_to_arraylist(String path){
+      String[] path_list = path.split("/");
+      ArrayList<String> result = new  ArrayList<>();
+      for(String s:path_list) {
+        result.add(s);
+      }
+      if(result.get(0).equals("")) result.remove(0);
+      return result;
+    }
+}

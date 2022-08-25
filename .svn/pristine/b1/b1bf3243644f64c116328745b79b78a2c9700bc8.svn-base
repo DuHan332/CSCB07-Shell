@@ -1,0 +1,54 @@
+package driver;
+import nodetype.*;
+import command.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+
+public class InputInterpreter {
+  public Tracker tracker;
+  private GiveOutput outputfile = new GiveOutput();
+  private HashMap<String, String> commandHashMap = new HashMap<String, String>();
+  
+  public void interprete(String input) {
+	tracker.getHistory().add(input);
+    input = input.replace("\t", " ");
+    String[] inputlist = input.trim().split(" +");
+    String commandName = inputlist[0];
+    outputfile.initializeOutputHashMap();    
+    if (commandHashMap.containsKey(commandName)) {
+      String[] parameter = new String[inputlist.length - 1];
+      try {
+        Commands command = (Commands) Class.forName(commandHashMap.get(commandName)).newInstance();
+        if (inputlist.length == 1) {
+          outputfile.printOutput(commandName, command.execute(parameter, tracker));
+        }else {
+          System.arraycopy(inputlist, 1, parameter, 0, parameter.length);
+          outputfile.printOutput(commandName, command.execute(parameter, tracker));
+        }
+      } catch (InstantiationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }  
+    }else {
+      outputfile.printOutput("general", "");;
+    }
+  }
+  
+  public void initializeCommandHashMap() {
+    this.commandHashMap.put("cd", "command.ChangeDirectory");
+    this.commandHashMap.put("exit", "command.Exit");
+    this.commandHashMap.put("ls", "command.List");
+    this.commandHashMap.put("mkdir", "command.MakeDirectory");
+    this.commandHashMap.put("pwd", "command.PrintWorkingDirectory");
+    //TODO: add more in Sprint2
+    
+  }
+  
+}

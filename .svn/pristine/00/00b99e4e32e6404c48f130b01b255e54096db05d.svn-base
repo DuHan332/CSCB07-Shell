@@ -1,0 +1,37 @@
+package driver;
+import outputformatter.*;
+import java.util.HashMap;
+/**
+ * This class calls the OutputFormatter for corresponding command. 
+ * @author Dezhi Ren
+ *
+ */
+
+public class GiveOutput {
+  private HashMap<String, String> outputHashMap = new HashMap<String, String>();
+  
+  public void printOutput(String commandName, String content) {
+    String outputForCommand = outputHashMap.get(commandName);  
+    try {
+      Output output = (Output) Class.forName(outputForCommand).newInstance();
+      output.giveOutput(content);
+    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  public void initializeOutputHashMap() {
+    this.outputHashMap.put("cd", "outputformatter.OutputForChangeDirectory");
+    this.outputHashMap.put("exit", "outputformatter.OutputForExit");
+    this.outputHashMap.put("ls", "outputformatter.OutputForList");
+    this.outputHashMap.put("mkdir", "outputformatter.OutputForMakeDirectory");
+    this.outputHashMap.put("pwd", "outputformatter.OutputForPrintWorkingDirectory");
+    this.outputHashMap.put("history", "outputformatter.OutputForHistory");
+    this.outputHashMap.put("pushd", "outputformatter.OutputForPushDirectory");
+    this.outputHashMap.put("popd", "outputformatter.OutputForPopDirectory");
+    this.outputHashMap.put("cat", "outputformatter.OutputForConcatenate");
+    this.outputHashMap.put("echo", "outputformatter.OutputForEcho");
+    this.outputHashMap.put("man", "outputformatter.OutputForManual");
+    
+  }
+}

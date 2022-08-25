@@ -1,0 +1,12 @@
+package outputformatter;
+
+public class OutputForHistory implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+      String[] list = content.split("\r");
+      for (String message :list) {
+        System.out.println(message);
+        } 
+  }
+}

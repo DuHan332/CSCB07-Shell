@@ -1,0 +1,49 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is implemented from interface Commands and it would pop the last directory in the
+ * directory stack and change the current directory to this directory.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class PopDirectory implements Commands {
+
+  /**
+   * The function would first check input and throw error if the input is invalid or the stack is
+   * empty. Then the function would remove the last directory in the directory stack and call the
+   * command.ChangeDirectory.execute to change the current directory to that directory.
+   * 
+   * @param parameter the input from user interpreted by driver.InputInterpreter
+   * @param tracker a tracker that store the root directory and current directory
+   * @return an empty string if the path is changed successfully and the last directory in the
+   *         directory is removed.
+   * @exception SystemErrorException this exception with an error message is thrown if the input is
+   *            invalid or the stack is empty.
+   */
+  public String execute(String[] parameter, Tracker tracker) throws SystemErrorException {
+    if (parameter.length != 0) {
+      throw new SystemErrorException("Command \"pop\" cannot take parameter.");
+    } else if (tracker.getStack().size() == 0) {
+      throw new SystemErrorException("The stack is empty.");
+    } else {
+      tracker.setCurrentDirectory(tracker.getStack().get(tracker.getStack().size() - 1));
+      tracker.getStack().remove(tracker.getStack().size() - 1);
+    }
+
+    return "";
+  }
+
+  /**
+   * The function would return the manual for PopDirectory command
+   */
+  @Override
+  public String getManual() {
+    return "popd:\nRemove the top entry from the directory " + "stack, and cd into it.";
+  }
+
+}

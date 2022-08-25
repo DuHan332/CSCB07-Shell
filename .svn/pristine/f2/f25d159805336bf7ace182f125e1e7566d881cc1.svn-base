@@ -1,0 +1,16 @@
+As a user, I want to quit the program.                                                       1 Hours
+As a user, I want to create directories.                                                     1 Hours
+As a user, I want to change the directory.                                                   1 Hours
+As a user, I want to view contents of the specific directory.                                1 Hours
+As a user, I want to know the current working directory.							       	 1 Hours
+As a user, I want to save current working directory into the stack so that I can change to   2 Hours
+another directory.
+As a user, I want to remove the directory on the top of stack so that I can change to this 	 2 Hours
+directory.
+As a user, I want to know the recent commands.                                               1 Hours
+As a user, I want to view the contents of the specific files.                                1 Hours
+As a user, I want to see what I typed.                                                       1 Hours
+As a user, I want to overwrite specific file with specific string.                           1 Hours
+As a user, I want to create a file with specific string.                                     1 Hours
+As a user, I want to add new contents to the specific file.                                  1 Hours
+As a user, I want to know the description of the commands.                                   1 Hours

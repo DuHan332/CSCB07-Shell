@@ -1,0 +1,10 @@
+Class name: MakeDirectory	
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Create a directory, the directory can be relative to the current directory or 
+  a full path.
+	
+Collaborators:
+* Directory 

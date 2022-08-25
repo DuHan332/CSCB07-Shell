@@ -1,0 +1,78 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.Echo;
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * These tests would test if Manual would return String which is the input from user which is
+ * surrounded by quotations. The tracker would not be used in Echo class so tracker here does not
+ * contain any contents.
+ */
+public class EchoTest {
+  Echo echo;
+  Tracker tracker;
+
+  /**
+   * initialize the tracker and echo object
+   */
+  @Before
+  public void setUp() {
+    tracker = new Tracker();
+    echo = new Echo();
+  }
+
+  /**
+   * These tests would test echo command for one correct parameter
+   */
+  @Test
+  public void testEcho() {
+
+    String[] input1 = {"\"Hello world\""};
+    try {
+      assertEquals("Hello world", echo.execute(input1, tracker));
+    } catch (SystemErrorException e) {
+      fail();
+    }
+
+    String[] input2 = {"\"Bye world\""};
+    try {
+      assertEquals("Bye world", echo.execute(input2, tracker));
+    } catch (SystemErrorException e) {
+      fail();
+    }
+  }
+  
+  /**
+   * These tests would test the echo parameter for several cases: no parameter,
+   * one incorrect parameter(not surrounded by quotations) and more than one parameter
+   * which are all invalid inputs. Each input from input0-2 is a case.
+   */
+    @Test
+    public void testEchoError() {
+      String[] input0 = {};
+      try {
+        assertEquals("", echo.execute(input0, tracker));
+      } catch (SystemErrorException e) {
+        assertEquals("must have at least one parameter", e.getMessage());
+      }
+
+      String[] input1 = {"Hello world"};
+      try {
+        assertEquals("", echo.execute(input1, tracker));
+      } catch (SystemErrorException e) {
+        assertEquals("the input is invalid for echo", e.getMessage());
+      }
+
+      String[] input2 = {"\"Hello world\"", "\"Bye world\""};
+      try {
+        assertEquals("", echo.execute(input2, tracker));
+      } catch (SystemErrorException e) {
+        assertEquals("too many parameters", e.getMessage());
+      }
+  }
+}
+

@@ -1,0 +1,10 @@
+Class name: Tracker
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Store the root and current directory
+* Store the history of commands
+	
+Collaborators:
+* Directory

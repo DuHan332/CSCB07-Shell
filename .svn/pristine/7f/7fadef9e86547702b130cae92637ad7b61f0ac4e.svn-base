@@ -1,0 +1,10 @@
+What did I work on in the last three days?
+    - modified the Exit class for more unified design
+    - add javadoc for classes to make my teammates to understand
+
+What do I plan to work in the next three days?
+	- find better way to seperate and interprete the input from users.
+
+Am I blocked on anything?
+	- how to recognize and sort out the inputed strings which are surrounded by
+	quotations from users.

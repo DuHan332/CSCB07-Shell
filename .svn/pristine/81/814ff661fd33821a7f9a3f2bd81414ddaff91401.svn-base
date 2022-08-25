@@ -1,0 +1,18 @@
+package outputformatter;
+
+public class OutputForList implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+    if (content.substring(0, 5).equals("Error")) {
+      System.out.println(content);
+    }else {
+      String[] list = content.split("\n");
+      for (String directory :list) {
+        System.out.println(directory);
+      }
+    }
+    
+  }
+
+}

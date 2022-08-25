@@ -1,0 +1,10 @@
+Class name: ErrorChecker		
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Receive the general error message from the Interpreter
+* Translate the general error message into specific error message
+	
+Collaborators:
+*

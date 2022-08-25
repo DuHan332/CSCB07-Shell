@@ -1,0 +1,15 @@
+What did I work on in the last three days?
+    - reviewed and modified CRC Cards with other team members.
+    - Discuss with team members about the way to give the output in JShell.
+    - brainstormed design ideas with team for InputInterpreter and Output 
+      commands. 
+
+What do I plan to work in the next three days?
+    - finish InputInterpreter and Output commands
+    - communicate with team members to improve cooperation of basic command
+     (JShell, InputInterpreter, Output and Exit) 
+
+Am I blocked on anything?
+    - How to give the output to users. i.e. creating a output file and 
+     continuously modify it when calling a function or get the returned output 
+     from every specific function

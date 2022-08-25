@@ -1,0 +1,13 @@
+What did I work on in the last three days?
+    - created a new helper function named isValidName that is able to check 
+      whether the name of directory or file contains invalid character
+    - wrote and updated the JavaDoc
+    - fixed the bugs in the class of RemoveDirectory
+    - modified some codes in the class of MakeDirectory
+
+What do I plan to work in the next three days?
+	- plan to work on classes of SaveJShell and LoadJShell
+	- write the JUnit Test
+	
+Am I blocked on anything?
+    - don't know how to save the JShell into a file and load it 

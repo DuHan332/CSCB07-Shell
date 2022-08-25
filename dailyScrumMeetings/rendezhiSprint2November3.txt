@@ -1,0 +1,16 @@
+What did I work on in the last three days?
+    - Learn how to custom an exception in Java
+    - Implement output for new command in Sprint2
+    - Brainstormed redesign ideas with team for how to give back error message 
+      to user.
+    - Discuss with team about how and where to implement the code that handle 
+      the error.
+
+What do I plan to work in the next three days?
+    - Finish Sprint3Backlog with team and distribute work more properly.
+    - Prepare for showing our demo of Assignment to TA.
+    - Test the complete project of our assignment.
+    - Improve the code of each command to make it more in line with user needs.
+
+Am I blocked on anything?
+    - How to interpret a string so that it will not be formatted as command.

@@ -1,0 +1,10 @@
+What did I work on in the last three days?
+    - wrote base codes for classes of SaveJShell and LoadJShell
+    - wrote some JUnit Tests
+
+What do I plan to work in the next three days?
+	- continue working on writing JUnit Tests
+	
+Am I blocked on anything?
+    - loadJShell command is not able to load
+    - what cases that tests need

@@ -1,0 +1,165 @@
+package command;
+
+import java.util.ArrayList;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.*;
+import helper.*;
+/**
+ * This class is implemented from interface Commands and it would list the files
+ * and directories in several specific paths. For each path, it would add a 
+ * String that contains the contents in the path into the return String, if 
+ * the path is a file, then its name would be added into the String.
+ * @author Du Han
+ */
+public class List implements Commands {
+/**
+ * This function would recognize the input and call the proper helper
+ * function that matches the input, and then it would merge all returned Strings
+ * into one String and return it.
+ * @param input  the input from user
+ * @param track  a Tracker that track the root directory and current directory
+ * @return a String that contains the result of this function
+ */
+	public String execute(String[] input, Tracker track) {
+		StringBuilder result = new StringBuilder();
+		try {
+		if (input.length == 0) {
+			return list(track.getCurrent_directory());
+		}
+		if (input.length == 1) {
+			return list(input[0], track.getRoot_directory(), 
+					track.getCurrent_directory());
+		} else {
+
+			for (String i : input) {
+				result.append(list(i, track.getRoot_directory(), 
+						track.getCurrent_directory()));
+				result.append("\r");
+			}
+			String strresult = result.toString();
+			return strresult;
+		}
+		}
+		catch(SystemErrorException e) {
+			System.err.println(e.getMessage());
+			String strresult = result.toString();
+			return strresult;
+		}
+	}
+/**
+ * This function would recognize if input is a full path or a relative path and
+ * call the proper helper function.
+ * @param input  the inputed path from user
+ * @param rd  the root directory
+ * @param cwd  the current working directory
+ * @return names of contents in a directory or name of a file 
+ * @throws Exception 
+ */
+	static private String list(String input, Directory rd, 
+			Directory cwd) throws SystemErrorException {
+		if (input.substring(0, 1).equals("/")) {
+			return list4full(input, rd, cwd);
+		} else {
+			return list4re(input, rd, cwd);
+		}
+	}
+/**
+ * This function overwrites the list function and it would be called when no 
+ * parameter is inputed, itwould call listnodes with given directory directly.
+ * @param directory  a directory
+ * @return names of contents in this directory 
+ */
+	private static String list(Directory directory) {
+		String result = listnodes(directory);
+		return result;
+	}
+	/**
+	 * this function would convert a full path to a ArrayList and call 
+	 * PathFinder to find this path and then call listnodes to return the proper 
+	 * String.
+	 * @param input  a full path
+	 * @param rd  the root directory
+	 * @param cwd  the current directory
+	 * @return  names of contents in a directory or name of a file
+	 * @throws Exception 
+	 */
+	static private String list4full(String input, Directory rd, 
+			Directory cwd) throws SystemErrorException {
+		if (input.equals("/")) {
+			return list(rd);
+		}
+		String[] temp = input.split("/");
+		ArrayList<String> path = new ArrayList<>();
+		for (String i : temp) {
+			path.add(i);
+		}
+		path.remove(0);
+		JNode target = FindPath.findpath(path, rd);
+		if (target == null) {
+			throw new SystemErrorException(input+" directory does not exist");
+		} else if (target.getIs_directory() == false) {
+			return target.getName() + "\n";
+		} else {
+			String result = listnodes((Directory) target);
+			return result;
+		}
+	}
+	/**
+	 * this function would convert a relative path to a ArrayList and call 
+	 * PathFinder to find this path then call listnodes to return the proper 
+	 * String.
+	 * @param input  a relative path
+	 * @param rd  the root directory
+	 * @param cwd  the current directory
+	 * @return  names of contents in a directory or name of a file or String 
+	 * that represents error
+	 * @throws Exception 
+	 */
+	static private String list4re(String input, Directory rd, 
+			Directory cwd) throws SystemErrorException {
+		String[] temp = input.split("/");
+		ArrayList<String> path = new ArrayList<>();
+		for (String i : temp) {
+			path.add(i);
+		}
+		JNode target = FindPath.findpath(path, cwd);
+		if (target == null) {
+			throw new SystemErrorException(input+" directory does not exist");
+		} else if (target.getIs_directory() == false) {
+			return target.getName() + "\n";
+		} else {
+			String result = listnodes((Directory) target);
+			return result;
+		}
+	}
+
+/**
+ * This function would return a String, begin with the name of the directory 
+ * and followed by a colon, then the names of directories or files in the 
+ * directory.
+ * @param directory  a directory that contain files and directories that we need
+ * to list
+ * @return  names of contents in a directory
+ */
+	static private String listnodes(Directory directory) {
+		ArrayList<String> ctList = new ArrayList<String>();
+		for (JNode node : directory.getSub()) {
+			ctList.add(node.getName());
+		}
+		StringBuilder result = new StringBuilder();
+		result.append(directory.getName() + ":");
+		for (String temp : ctList) {
+			result.append(temp);
+			result.append(" ");
+		}
+		if(ctList.size()!=0) {
+		result.deleteCharAt(result.length() - 1);
+		}
+		result.append("\n");
+		String strresult = result.toString();
+		return strresult;
+	}
+
+}

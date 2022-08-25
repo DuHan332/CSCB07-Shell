@@ -1,0 +1,22 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print nothing for command
+ * ChangeDirectory.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForChangeDirectory implements Output {
+
+  /**
+   * The function would print nothing.
+   * 
+   * @param content the content should be an empty string
+   */
+  public void giveOutput(String content) {
+    if (content.equals(""))
+      return;
+  }
+}

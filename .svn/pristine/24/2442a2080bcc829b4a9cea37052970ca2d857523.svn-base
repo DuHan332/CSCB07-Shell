@@ -1,0 +1,6 @@
+package command;
+import driver.Tracker;
+
+public interface Commands {
+	public String execute(String[] input, Tracker tracker);
+}

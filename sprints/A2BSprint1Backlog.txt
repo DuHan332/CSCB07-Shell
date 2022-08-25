@@ -1,0 +1,70 @@
+//Sprint 1 Backlog For A2B
+
+November 16th to November 22nd
+
+
+User Stories from Product Backlog that we will address in this sprint:
+
+a) As a user, I want to store the result of my command into a file.       
+b) As a user, I want to delete the directory.                               
+c) As a user, I want to create directories as many as I want.              
+d) As a user, I want to see what is in the directories or what is in their  
+   sub directories.                                                    
+e) As a user, I want to move the item into another directory.       
+f) As a user, I want to copy the item into another directory.           
+g) As a user, I want to see the content of files as many as I want.   
+h) As a user, I want to download the file from a link and save it into     
+  the current directory.                                               
+i) As a user, I want to know how to use a specific command in JShell   
+j) As a user, I want to search the item in some specific path.         
+k) As a user, I want to see what I typed.                           
+ 
+
+Specific tasks to be accomplished:
+a-1. (EchoOverwrite) Modify the class as a helper function for all commands.
+a-2. (EchoAppend) Modify the class as a helper function for all commands.
+a-3. (RedirectOverwrite) Create an class that takes the ability of EchoOverwrite
+                         but works for all commands.
+a-4. (RedirectAppend) Create an class that takes the ability of EchoAppend
+                      but works for all commands.
+b-1. (RemoveDirectory) Create a class that removes the directory.
+b-2. (RemoveDirectory) Write private helper function that remove all the sub 
+                       directory of that directory.
+c-1. (MakeDirecroty) Modify the MakeDirecroty class that can create many 
+                     directories as customer wants.
+d-1. (List) Modify the List class that can receive "-R" as a new function.
+d-2. (List) Modify the class so that it can redirect the result to a file.
+e-1. (Move) Create a class that can move the item into target directory.
+e-2. (Move) Write private helper functions to decide whether the item is a file 
+            or directory.
+f-1. (Copy) Create a class that can copy the item into target directory.
+f-2. (Copy) Write private helper functions to decide whether the item is a file 
+            or directory.
+f-3. (Copy) Write private helper functions that copy all the sub directories and 
+            files if the items is a directory.
+g-1. (Concatenate) Modify the class so that it can redirect the result to a
+                   file.
+g-2. (Concatenate) Modify the class that can concatenate many files as 
+                   customer wants.
+h-1. (CopyURL) Create a class that can retrieve the file at that URL and add 
+               it to the current working directory.
+i-1. (Manual) Modify the class that only take one parameter.
+j-1. (Search) Create a class that can search whether the item is in the paths.
+k-1. (Echo) Modify the class so that it will not use EchoOverwrite and 
+            EchoAppend but use redirection. 
+
+
+y-1. Modify all the class that will not print result.
+z-1. Modify all the CRC cards.
+
+These tasks are assigned as follows:
+
+User: Du Han
+Tasks: d-1, d-2, g-1, g-2, i-1, k-1
+
+User: Dezhi Ren
+Tasks: e-1, e-2, f-1, f-2, h-1, j-1, y-1
+
+User: Yuanqian Fang
+Tasks: a-1, a-2, a-3, a-4, b-1, b-2, c-1, z-1
+

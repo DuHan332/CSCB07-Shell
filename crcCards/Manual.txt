@@ -1,0 +1,9 @@
+Class name: Manual
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Display the documentation for commands.
+	
+Collaborators:
+* 

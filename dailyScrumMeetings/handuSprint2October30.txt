@@ -1,0 +1,17 @@
+What did I work on in the last three days?, 
+    - revised and fixed the bugs in the List command
+    - brainstormed and implemented the Echo command
+    - brainstormed and implemented the History command
+    - discussed and modified the process of whole program.
+
+What do I plan to work in the next three days?
+	- work on the code of Concatenate command
+	- work on the code of Manual command
+	- review CRC cards to check if we need anything new
+    - work on ErrorChecker methods with teammates
+    - find and fix any bugs in codes we wrote
+
+
+Am I blocked on anything?
+    - what should the ErrorChecker method do
+    - how could our codes have a better structure

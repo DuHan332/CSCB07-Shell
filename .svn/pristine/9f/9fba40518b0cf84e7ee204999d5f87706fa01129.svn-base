@@ -1,0 +1,50 @@
+package driver;
+
+import nodetype.Directory;
+import java.util.ArrayList;
+/**
+ * This class contains the current directory, root directory, directory and 
+ * input history for tracking purpose.
+ * @author Dezhi Ren
+ *
+ */
+
+public class Tracker {
+  private Directory current_directory;
+  private Directory root_directory;
+  private ArrayList<String> history = new ArrayList<String>();
+  private ArrayList<Directory> stack = new ArrayList<Directory>();
+  
+  public ArrayList<Directory> getStack() {
+    return stack;
+  }
+
+  public void setStack(ArrayList<Directory> stack) {
+    this.stack = stack;
+  }
+
+  public ArrayList<String> getHistory() {
+	return history;
+  }
+
+  public void setHistory(ArrayList<String> history) {
+	this.history = history;
+  }
+
+  public Directory getRoot_directory() {
+    return root_directory;
+  }
+
+  public void setRoot_directory(Directory root_directory) {
+    this.root_directory = root_directory;
+  }
+
+  public Directory getCurrent_directory() {
+    return current_directory;
+  }
+
+  public void setCurrent_directory(Directory current_directory) {
+    this.current_directory = current_directory;
+  }
+
+}

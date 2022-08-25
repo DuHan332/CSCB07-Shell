@@ -1,0 +1,110 @@
+package command;
+import java.util.ArrayList;
+import nodetype.*;
+import driver.Tracker;
+
+public class MakeDirectory implements Commands{
+  private Directory currentdirectory;
+  private Directory root;
+  
+  public String execute(String[] input, Tracker track) {
+    this.currentdirectory = track.getCurrent_directory();
+    this.root =track.getRoot_directory();
+    if(input.length!=2) {
+      return "must take two arguments";
+    }
+    else {
+    if(mkdir(input[0])) {
+      if(mkdir(input[1])) {
+        return "both successful";
+      }
+      else {
+        return "dir2 not successful";
+      }
+    }
+    else {
+      return "dir1 not successful";
+      }
+  }
+ }
+  
+  static private Directory check_path(Directory cur, ArrayList<String> path){
+    if (path.size()==1) {
+      return cur;
+    }
+    else {
+      for(JNode s: cur.getSub()) {
+         if(s.getName().equals(path.get(0))&&s.getIs_directory()==true) {
+           path.remove(0);
+           return check_path((Directory)s,path);
+         }
+        }
+       return null;
+      }
+    }
+  
+  static private boolean Is_exist(Directory cur, String to_plug){
+    boolean result = false;
+    for(JNode s: cur.getSub()) {
+      if(to_plug.equals(s.getName())) {
+        result = true;
+      }
+    }
+    return result;  
+  }
+  
+  static private ArrayList<String> path_to_arraylisy(String path){
+    String[] sub_path = path.split("\\\\");
+    ArrayList<String> result = new  ArrayList<>();
+    for(String s:sub_path) {
+      result.add(s);
+    }
+    if(result.get(0)=="") result.remove(0);
+    return result;
+  }
+  
+  static private void add(Directory cur, String name) {
+    JNode new_thing = new Directory(cur,name);
+    ArrayList<JNode> sub1 = new ArrayList<JNode>();
+    sub1=cur.getSub();
+    sub1.add(new_thing);
+    cur.setSub(sub1);
+    }
+  
+   private boolean mkdir(String dir) {
+     if(dir.substring(0,1).equals("\\")==false) // 一定是相对路径 or是directory 
+     {
+       ArrayList<String> temp = path_to_arraylisy(dir);// create a arraylist to contain the path
+       if(check_path(currentdirectory,temp) != null) //path 是存在的
+       {
+            Directory to_add = check_path(currentdirectory,temp);
+            if(Is_exist(to_add ,temp.get(temp.size()-1))==false)// if doesn't exist
+            {
+              add(to_add, temp.get(temp.size()-1));
+              return true;
+            }
+            else return false; // 有重复名
+       }
+       else return false;// do something that express error(dir1 提供的path 不存在)   
+      }
+     else// dir1 是绝对路径
+     {
+       ArrayList<String> temp = path_to_arraylisy(dir);// create a arraylist to contain the path
+       if(check_path(root,temp) != null) //path 是存在的
+       {
+            Directory to_add = check_path(root,temp);
+            if(Is_exist(to_add ,temp.get(temp.size()-1))==false)// if doesn't exist
+            {
+              add(to_add, temp.get(temp.size()-1));
+              
+            }
+            else return false;// do something that express error(文件名已存在)
+       }
+       else return false;// do something that express error(path 不存在)  return 
+     }
+    return false;
+   }
+}
+  
+
+

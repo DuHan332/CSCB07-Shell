@@ -1,0 +1,11 @@
+Class name: FinaPath
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Returns the directory or file that are end of the path if the path exists
+
+	
+Collaborators:
+* Directory
+* File

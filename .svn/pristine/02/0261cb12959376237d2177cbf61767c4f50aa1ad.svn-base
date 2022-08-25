@@ -1,0 +1,46 @@
+package command;
+
+import driver.Tracker;
+
+public class Echo implements Commands{
+	public String execute(String[] input, Tracker track) {
+		if(input.length==0){
+			return "Error1";//shoulds have parameter
+		}
+		if(input.length==1){
+			if(isSurrounded(input[0])){
+				return input[0];
+			}
+			return "Error2";//first parameter should be surrounded by quotations
+		}
+		if(input.length==2) {
+			return "Error3";//two parameters is not acceptable
+		}
+		if(input.length==3) {
+			if(isSurrounded(input[0])) {
+				if(input[1].equals(">")) {
+					//调用并返回EchoOverwrite,参数是input[0](字符串)和input[2](路径)
+					return "";
+				}
+				else if(input[1].equals(">>")) {
+					return "";
+					//调用并返回EchoAppend,参数是input[0](字符串)和input[2](路径)
+				}
+				
+			}
+			return "Error2";//first parameter should be surrounded by quotations
+		}
+		return "Error3";//too many parameters
+	}
+	
+	
+	private boolean isSurrounded(String input) {
+		String first = input.substring(0,1);
+		String last = input.substring(input.length()-1,input.length());					
+		if(first.equals("\"")&&last.equals("\"")){
+			return true;
+		}
+		return false;
+	}
+
+}

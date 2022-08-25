@@ -1,0 +1,48 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is implemented from interface Commands and it would push the current directory into
+ * directory stack and change the current directory to the target directory.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class PushDirectory implements Commands {
+
+  /**
+   * The function would first check input and throw error if the input is invalid. Then the function
+   * would add the current directory into directory stack and call the
+   * command.ChangeDirectory.execute to change the current directory to the target directory.
+   * 
+   * @param parameter the input from user interpreted by driver.InputInterpreter
+   * @param tracker a tracker that store the root directory and current directory
+   * @return an empty string if the path is changed successfully and the current directory is added
+   *         into directory stack
+   * @exception SystemErrorException this exception with an error message is thrown if the input is
+   *            invalid or fails to change current directory to target directory
+   */
+  public String execute(String[] parameter, Tracker tracker) throws SystemErrorException {
+    ChangeDirectory CD = new ChangeDirectory();
+    String result = "";
+    if (parameter.length == 0) {
+      throw new SystemErrorException("Losing the target directory");
+    } else if (parameter.length > 1) {
+      throw new SystemErrorException("There is more than one parameter");
+    } else {
+      try {
+        tracker.getStack().add(tracker.getCurrent_directory());
+        result = CD.execute(parameter, tracker);
+      } catch (SystemErrorException e) {
+        tracker.getStack().remove(tracker.getStack().size() - 1);
+        System.err.println(e.getMessage());
+      }
+    }
+
+    return result;
+  }
+
+}

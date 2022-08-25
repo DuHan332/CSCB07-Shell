@@ -1,0 +1,11 @@
+package outputformatter;
+
+public class OutputForChangeDirectory implements Output {
+  
+  public void giveOutput(String content) {
+    if (content.equals("")) 
+      return;
+    else 
+      System.out.println(content);
+  }
+}

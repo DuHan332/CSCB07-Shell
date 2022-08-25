@@ -1,0 +1,73 @@
+package test;
+
+import static org.junit.Assert.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import driver.GiveOutput;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+
+public class GiveOutputTest {
+
+  private GiveOutput go = new GiveOutput();
+  private Directory root = new Directory(null, "/");
+  private Tracker tracker;
+  private final ByteArrayOutputStream outPut = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+  private final PrintStream originalOutput = System.out;
+  private final PrintStream originalError = System.err;
+  
+  @Before
+  public void setUp() {
+    System.setOut(new PrintStream(outPut));
+    System.setErr(new PrintStream(errContent));
+    
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  @After
+  public void restoreStreams() {
+    System.setOut(originalOutput);
+    System.setErr(originalError);
+  }
+  
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+  }
+
+  /**
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+  }
+  
+  @Test
+  public void testPrintOutput() {
+    String content = "/: a b\rThe directory s is not exist";
+    go.printOutput(content);
+    assertEquals("/: a b\r\n", outPut.toString());
+    assertEquals("The directory s is not exist\r\n", errContent.toString());
+  }
+  
+  @Test
+  public void testRedirectOutput() throws SystemErrorException {
+    String content = "/: a b\rThe directory s is not exist";
+    go.redirectOutput(content, "/file1", true, tracker);;
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "file1");
+    assertEquals("The directory s is not exist\r\n", errContent.toString());
+  }
+
+}

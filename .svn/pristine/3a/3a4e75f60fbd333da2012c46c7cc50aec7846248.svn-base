@@ -1,0 +1,89 @@
+package command;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is complemented from Commands and it would show the documentation of specific
+ * commands. It would add the String which are documentations of specific commands into return
+ * String. It uses HashMap to match commands with documentations and Expectation would be throwed
+ * if specific command does not exist.
+ * 
+ * @author Du Han
+ *
+ */
+public class Manual implements Commands {
+  private HashMap<String, String> commandHashMap = new HashMap<String, String>();
+  /**
+   * This function would return the manual of this command.
+   * 
+   * @return a String that describes how to use this command.
+   */
+  public String getManual() {
+    String Manual = "man CMD [CMD2 бн]:\nPrint documentation for CMD(s).";
+    return Manual;
+  }
+  /**
+   * This function would call initializeCommandHashMap function to initialize the HashMap and then
+   * get the documentation of each commands inputed by user. The documentation of each command would
+   * be added to the return String if the command exists; if the command does not exist or no
+   * parameter is inputed, it would throw error.
+   * 
+   * @param input the inputed parameters from user
+   * @param track the tracker defined in the interpreter
+   * @return the String that contains documentations of commands
+   * @throws SystemErrorException
+   */
+  
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length == 0) {
+      throw new SystemErrorException("must has at least one parameter");
+    } else if (input.length == 1) {
+      initializeCommandHashMap();
+      StringBuilder result = new StringBuilder();
+      if (input[0].equals("LoadJShell")) {
+        LoadJShell loadJShell = new LoadJShell();
+        return loadJShell.getManual();
+      }
+      else if (commandHashMap.containsKey(input[0])) {
+        try {
+          Commands command = (Commands) Class.forName(commandHashMap.get(input[0])).newInstance();
+           result.append(command.getManual());
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+      } else {
+        throw new SystemErrorException(input[0] + " does not exist");
+      }
+      return result.toString();
+    } else {
+      throw new SystemErrorException("too many parameters");
+    }
+  }
+  /**
+   * This function would initialize the HashMap with the name of commands name of Class
+   */
+  public void initializeCommandHashMap() {
+    this.commandHashMap.put("cd", "command.ChangeDirectory");
+    this.commandHashMap.put("exit", "command.Exit");
+    this.commandHashMap.put("ls", "command.List");
+    this.commandHashMap.put("mkdir", "command.MakeDirectory");
+    this.commandHashMap.put("pwd", "command.PrintWorkingDirectory");
+    this.commandHashMap.put("history", "command.History");
+    this.commandHashMap.put("pushd", "command.PushDirectory");
+    this.commandHashMap.put("popd", "command.PopDirectory");
+    this.commandHashMap.put("cat", "command.Concatenate");
+    this.commandHashMap.put("echo", "command.Echo");
+    this.commandHashMap.put("man", "command.Manual");
+    this.commandHashMap.put("search", "command.Search");
+    this.commandHashMap.put("rm", "command.RemoveDirectory");
+    this.commandHashMap.put("cp", "command.CopyItem");
+    this.commandHashMap.put("mv", "command.MoveItem");
+    this.commandHashMap.put("tree", "command.Tree");
+    this.commandHashMap.put("saveJShell", "command.SaveJShell");
+    this.commandHashMap.put("loadJShell", "command.LoadJShell");
+  }
+}

@@ -1,0 +1,56 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import exception.SystemErrorException;
+import helper.FindPath;
+import nodetype.*;
+
+public class MoveItem implements Commands {
+
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    CopyItem cp = new CopyItem();
+    cp.execute(input, tracker);
+
+    String[] oldPath = new String[1];
+    oldPath[0] = input[0];
+
+    if (cp.isCopyDirectory()) {
+      RemoveDirectory rm = new RemoveDirectory();
+      return rm.execute(oldPath, tracker);
+    } else {
+      removeFile(oldPath, tracker);
+    }
+    return "";
+  }
+
+  private static void removeFile(String[] oldPath, Tracker tracker) {
+    JNode target;
+    Directory root;
+    String[] oldPathList = oldPath[0].split("/");
+    ArrayList<String> oldPathArrayList = new ArrayList<String>();
+    for (String i : oldPathList)
+      oldPathArrayList.add(i);
+    if (oldPathList[0].equals("")) {
+      oldPathArrayList.remove(0);
+      target = FindPath.findpath(oldPathArrayList, tracker.getRootDirectory());
+    } else {
+      target = FindPath.findpath(oldPathArrayList, tracker.getCurrentDirectory());
+    }
+    root = target.getRoot();
+    for (int i = 0; i < root.getSub().size(); i++)
+      if (root.getSub().get(i).getName().equals(target.getName())) {
+        root.getSub().remove(i);
+        break;
+      }
+  }
+
+  @Override
+  public String getManual() {
+    return "mv OLDPATH NEWPATH:\nMove item OLDPATH to NEWPATH. Both OLD-"
+        + "PATH and NEWPATH may be relative to\nthe current directory or may be "
+        + "fullpaths. If NEWPATH is a directory, move\nthe item into the directory.";
+  }
+
+}

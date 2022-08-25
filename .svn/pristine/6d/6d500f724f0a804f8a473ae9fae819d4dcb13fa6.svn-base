@@ -1,0 +1,94 @@
+package driver;
+
+import nodetype.Directory;
+import java.util.ArrayList;
+/**
+ * This class contains the current directory, root directory, directory and 
+ * input history for tracking purpose.
+ * @author Dezhi Ren
+ *
+ */
+
+public class Tracker {
+  private boolean swc;
+  private Directory current_directory;
+  private Directory root_directory;
+  private ArrayList<String> history = new ArrayList<String>();
+  private ArrayList<Directory> stack = new ArrayList<Directory>();
+  
+  /**
+   *The getter function for directory stack
+   *@return stack      the directory stack
+   */
+  public ArrayList<Directory> getStack() {
+    return stack;
+  }
+
+  /**
+   *The setter function for directory stack
+   */
+  public void setStack(ArrayList<Directory> stack) {
+    this.stack = stack;
+  }
+
+  /**
+   *The getter function for ArrayList of command history
+   *@return history      ArrayList of command history
+   */
+  public ArrayList<String> getHistory() {
+	return history;
+  }
+
+  /**
+   *The setter function for ArrayList of command history
+   */
+  public void setHistory(ArrayList<String> history) {
+	this.history = history;
+  }
+
+  /**
+   *The getter function for root directory
+   *@return root_directory      the root directory
+   */
+  public Directory getRoot_directory() {
+    return root_directory;
+  }
+
+  /**
+   *The setter function for root directory
+   */
+  public void setRoot_directory(Directory root_directory) {
+    this.root_directory = root_directory;
+  }
+
+  /**
+   *The getter function for current directory
+   *@return current_directory      the current directory
+   */
+  public Directory getCurrent_directory() {
+    return current_directory;
+  }
+
+  /**
+   *The setter function for current directory
+   */
+  public void setCurrent_directory(Directory current_directory) {
+    this.current_directory = current_directory;
+  }
+
+  /**
+   *The getter function for swc
+   *@return swc      the variable the determine whether JShell is operation
+   */
+public boolean getSwc() {
+	return swc;
+}
+
+/**
+ *The setter function for swc
+ */
+public void setSwc(boolean swc) {
+	this.swc = swc;
+}
+
+}

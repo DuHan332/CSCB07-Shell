@@ -1,0 +1,11 @@
+Class name: JShell			
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Continually prompt the user for input
+* Call Interpreter function  
+	
+Collaborators:
+* InputInterpreter
+* JNode

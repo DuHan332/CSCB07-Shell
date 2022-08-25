@@ -1,0 +1,14 @@
+What did I work on in the last three days?, 
+    - modify the Manual command to meet the the requirement
+    - modify the Manual command to satisify the redirect function
+    - modify the Concatenate command to satisify the redirect function
+    - modify the Concatenate command for better output format
+
+What do I plan to work in the next three days?
+	- work on list command to satisify the redirect function
+	- work on list command to satisify the "-R" function
+	- work on Echo command for new design
+
+Am I blocked on anything?
+    - how could I traversal the whole file system or a part of file system for 
+    "-R" function? what order should I follow? DFS or BFS?

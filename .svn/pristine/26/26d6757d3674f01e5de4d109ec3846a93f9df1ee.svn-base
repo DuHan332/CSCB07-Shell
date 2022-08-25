@@ -1,0 +1,18 @@
+package outputformatter;
+
+public class OutputForList implements Output {
+
+  @Override
+  public void giveOutput(String content) {
+	  String[] list = content.split("\r");
+	  for (String directory :list) {
+		  if (directory.length() < 5 || !directory.substring(0, 5).equals("Error")) {
+			  System.out.println(directory);
+		    }else {
+		    	System.out.println(directory);
+		    	System.out.println("error solutor would be called");
+		    } 
+	      } 
+  }
+
+}

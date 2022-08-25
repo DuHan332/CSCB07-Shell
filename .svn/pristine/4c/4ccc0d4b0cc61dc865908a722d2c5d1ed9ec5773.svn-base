@@ -1,0 +1,98 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.*;
+import helper.FindPath;
+
+public class CopyItem implements Commands {
+
+  private boolean isCopyDirectory;
+  
+  @Override
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    if (input.length > 2) {
+      throw new SystemErrorException("There are more than two path!");
+    } else if (input.length == 1) {
+      throw new SystemErrorException("Lossing NEWPATH!");
+    } else if (input.length == 0) {
+      throw new SystemErrorException("Lossing OLDPATH and NEWPATH!");
+    }
+    JNode item = getOldPath(input, tracker);
+    Directory targetDirectory = getNewPath(input, tracker);
+    if (item.getIs_directory()) {
+      this.isCopyDirectory = true;
+      targetDirectory.getSub().add(copyDirectory((Directory) item, targetDirectory));
+    } else {
+      this.isCopyDirectory = false;
+      targetDirectory.getSub().add(copyFile((File) item, targetDirectory));
+    }
+
+    return "";
+  }
+
+  private static File copyFile(File org, Directory newFather) {
+    File newFile = new File(org.getContent(), newFather, org.getName());
+    return newFile;
+  }
+
+  private static Directory copyDirectory(Directory org, Directory newFather) {
+    Directory newDirectory = new Directory(newFather, org.getName());
+    if (org.getSub().size() == 0) {
+      return newDirectory;
+    }
+    for (JNode i : org.getSub()) {
+      if (i.getIs_directory()) {
+        newDirectory.getSub().add((copyDirectory((Directory) i, newDirectory)));
+      } else {
+        newDirectory.getSub().add(copyFile((File) i, newDirectory));
+      }
+    }
+    return newDirectory;
+  }
+
+  private static JNode getOldPath(String[] input, Tracker tracker) throws SystemErrorException {
+    String[] oldPathList = input[0].split("/");
+    ArrayList<String> oldPathArrayList = new ArrayList<String>();
+    for (String i : oldPathList)
+      oldPathArrayList.add(i);
+    JNode oldPathItem;
+    if (oldPathList[0].equals("")) {
+      oldPathArrayList.remove(0);
+      oldPathItem = FindPath.findpath(oldPathArrayList, tracker.getRoot_directory());
+    }else {
+      oldPathItem = FindPath.findpath(oldPathArrayList, tracker.getCurrent_directory());
+    }
+    if (oldPathItem == null) {
+      throw new SystemErrorException("The OLDPATH is wrong");
+    }
+    return oldPathItem;
+  }
+
+  private static Directory getNewPath(String[] input, Tracker tracker) throws SystemErrorException {
+    String[] newPathList = input[1].split("/");
+    ArrayList<String> newPathArrayList = new ArrayList<String>();
+    for (String i : newPathList)
+      newPathArrayList.add(i);
+    JNode newPath;
+    if (newPathList[0].equals("")) {
+      newPathArrayList.remove(0);
+      newPath = FindPath.findpath(newPathArrayList, tracker.getRoot_directory());
+    }else {
+      newPath = FindPath.findpath(newPathArrayList, tracker.getCurrent_directory());
+    }
+    if (newPath == null) {
+      throw new SystemErrorException("The NEWPATH is wrong");
+    }
+    if (!newPath.getIs_directory()) {
+      throw new SystemErrorException("The NEWPATH is a file");
+    }
+    return (Directory) newPath;
+  }
+
+  public boolean isCopyDirectory() {
+    return isCopyDirectory;
+  }
+
+}

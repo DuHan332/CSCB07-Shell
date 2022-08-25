@@ -1,0 +1,20 @@
+What did I work on in the last three days?
+    - Implement the function that I have been assigned.
+    - Learn HashMap and interface and use them in my code instead of too many if
+      statements.
+    - Brainstormed redesign ideas with team for the code structure of each 
+      command so that they can fit for the HashMap and interface requirement
+    - Discuss with team about the potential error reaction for each command if 
+      receiving a improper input.
+
+What do I plan to work in the next three days?
+    - Finish Sprint2Backlog with team and distribute work more properly. (This 
+      is because in Sprint1 we found that some parts of the work are more 
+      relative than other)
+    - Review CRC cards about class in Sprint2.
+    - Test the whole project before we start writing code for Sprint2.
+    - Writing the code that handling error for all the commands.
+
+Am I blocked on anything?
+    - Will I need to Create a HashMap for all error case? Or try to use 
+      "catch exception" method.

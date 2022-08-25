@@ -1,0 +1,16 @@
+What did I work on in the last three days?, 
+    - fixed the bugs in the MakeDirectory
+    - write base codes for EchoOverwrite
+    - write base codes for EchoOverAppend
+
+What do I plan to work in the next three days?
+	- continue to work on EchoOverwrite
+	- continue to work on EchoOverAppend
+	- discuss with other team members about how to design the ErrorChecker and 
+	  work on it
+
+
+Am I blocked on anything?
+    - the design about ErrorChecker method
+    - how to deal with the string of the input in the Echo, because as a string,
+      it could contain any character

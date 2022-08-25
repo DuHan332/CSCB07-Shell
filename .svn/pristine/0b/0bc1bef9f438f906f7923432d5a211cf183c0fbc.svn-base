@@ -1,0 +1,8 @@
+Class name: Exit		
+Parent class: 
+Subclasses:
+
+Responsibilities:
+* Exit the JShell
+	
+Collaborators:

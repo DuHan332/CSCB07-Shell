@@ -1,0 +1,48 @@
+package nodetype;
+
+import java.util.ArrayList;
+
+/**
+ * This class inherits from the class of JNode.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class Directory extends JNode {
+  /**
+   * an ArrayList represents the files and directories that are under the directory
+   */
+  private ArrayList<JNode> sub;
+
+  /**
+   * This function can get an ArrayList contains files and directories that are under the directory.
+   * 
+   * @return
+   */
+  public ArrayList<JNode> getSub() {
+    return sub;
+  }
+
+  /**
+   * This function can set the files and directories under the directory.
+   * 
+   * @param sub an ArrayList used to set the files and directories under the directory
+   */
+
+  public void setSub(ArrayList<JNode> sub) {
+    this.sub = sub;
+  }
+
+  /**
+   * This function is a constructor for directory.
+   * 
+   * @param root a Directory represents the directory's root
+   * @param name a String represents the name of the directory
+   */
+  public Directory(Directory root, String name) {
+    this.setRoot(root);
+    this.setName(name);
+    this.sub = new ArrayList<JNode>();
+    this.setIs_directory(true);
+  }
+}

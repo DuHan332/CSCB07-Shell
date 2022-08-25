@@ -1,0 +1,42 @@
+//Sprint 1 Backlog For A2B
+
+November 16th to November 22nd
+
+
+User Stories from Product Backlog that we will address in this sprint:
+
+a) As a user, I want to download the file from a link and save it into       
+   the current directory.       
+b) As a user, I want to know how to use a specific command in JShell  
+c) As a user, I want to save the current status of JShell.   
+d) As a user, I want to load the status of JShell I saved.  
+f) As a user, I want to view the JShell system as a concrete graph 
+
+Specific tasks to be accomplished:
+a-1. (CopyURL) Implements the function that get content from a url.
+a-2. (CopyURL) Implements the function that save the  file from url.
+b-1. (Manual) Create files that save the content of manual of commands.
+b-2. (Manual) Modify the class to take the content from those files.
+c-1. (SaveJShell) Create class that save the current JShell status as a file.
+c-2. (SaveJShell) Write functions that save the file into actual computer system
+d-1. (LoadJShell) Create class that load the JShell status from a file.
+d-2. (LoadJShell) Write functions that read the file from actual computer system
+e-1. (Tree) Create a class that tree the how structure of the current file 
+            system.
+f-1. Write Test Class for ChangeDirectory, CopyItem, CopyURL, MoveItem, PopDirectory, PushDirectory, Search, SaveJShell, LoadJShell, ModifyInput
+g-1. Write Test Class for Concatenate, Echo, Exit, History, List, Manual, Tree, FindPath
+h-1. Write Test Class for MakeDirectory, PrintWorkingDirectory, RemoveDirectory, RedirectOverwrite, RedirectAppend
+
+z-1. Modify all the CRC cards.
+
+These tasks are assigned as follows:
+
+User: Du Han
+Tasks: e-1, b-1, b-2
+
+User: Dezhi Ren
+Tasks: a-1, a-2, f-1
+
+User: Yuanqian Fang
+Tasks: h-1, z-1, c-1, c-2, d-1, d-2
+

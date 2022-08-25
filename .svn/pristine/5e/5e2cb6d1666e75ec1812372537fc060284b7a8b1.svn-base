@@ -1,0 +1,174 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import command.ChangeDirectory;
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.*;
+
+public class ChangeDirectoryTest {
+
+  private ChangeDirectory cd;
+  private Directory root;
+  private Tracker tracker;
+
+  @Before
+  public void setUp() {
+    cd = new ChangeDirectory();
+    root = new Directory(null, "/");
+    Directory directoryA = new Directory(root, "FolderA");
+    root.getSub().add(directoryA);
+
+    File fileA = new File("I am A", directoryA, "FileA");
+    directoryA.getSub().add(fileA);
+
+    Directory directoryB = new Directory(root, "FolderB");
+    root.getSub().add(directoryB);
+
+    Directory directoryC = new Directory(directoryB, "FolderC");
+    directoryB.getSub().add(directoryC);
+
+    tracker = new Tracker();
+    tracker.setCurrentDirectory(root);
+    tracker.setRootDirectory(root);
+  }
+
+  /**
+   * It would test if the file system is correct
+   */
+  @Test
+  public void testFileSystem() {
+    assertEquals(root.getName(), "/");
+    assertEquals(root.getSub().get(0).getName(), "FolderA");
+    assertEquals(root.getSub().get(1).getName(), "FolderB");
+    assertEquals(((Directory) root.getSub().get(0)).getSub().get(0).getName(), "FileA");
+    assertEquals(((Directory) root.getSub().get(1)).getSub().get(0).getName(), "FolderC");
+  }
+
+  /**
+   * It would test if the tracker is correct
+   */
+  @Test
+  public void testTracker() {
+    assertEquals(tracker.getRootDirectory().getName(), "/");
+    assertEquals(tracker.getCurrentDirectory().getName(), "/");
+    assertEquals(tracker.getRootDirectory().getSub().get(0).getName(), "FolderA");
+    assertEquals(tracker.getRootDirectory().getSub().get(1).getName(), "FolderB");
+  }
+
+  /**
+   * It would test if the ChangeDirectory change the current directory for whole route correctly
+   */
+  @Test
+  public void testChangeDirectoryForCorrectWholeRoute() throws SystemErrorException {
+    String[] parameter = new String[1];
+    parameter[0] = "/FolderB";
+    cd.execute(parameter, tracker);
+    assertEquals(tracker.getCurrentDirectory().getName(), "FolderB");
+
+  }
+
+  /**
+   * It would test if the ChangeDirectory change the current directory for relative route correctly
+   */
+  @Test
+  public void testChangeDirectoryForCorrectRelativeRoute() throws SystemErrorException {
+    String[] parameter = new String[1];
+    parameter[0] = "FolderC";
+    tracker.setCurrentDirectory((Directory) root.getSub().get(1));
+    cd.execute(parameter, tracker);
+    assertEquals(tracker.getCurrentDirectory().getName(), "FolderC");
+
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for wrong whole route
+   */
+  @Test
+  public void testChangeDirectoryForWholeRouteOfWrongDirectory() {
+    String[] parameter = new String[1];
+    parameter[0] = "/FolderB/FolderD";
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Cannot find the path \"" + parameter[0] + "\".");
+    }
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for wrong relative
+   * route
+   */
+  @Test
+  public void testChangeDirectoryForRelativeRouteOfWrongDirectory() {
+    String[] parameter = new String[1];
+    parameter[0] = "FolderE";
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "Cannot find the path \"" + parameter[0] + "\".");
+    }
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for a whole route of
+   * file
+   */
+  @Test
+  public void testChangeDirectoryForWholeRouteOfFile() {
+    String[] parameter = new String[1];
+    parameter[0] = "/FolderA/FileA";
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The target is not a directory.");
+    }
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for a relative route
+   * of file
+   */
+  @Test
+  public void testChangeDirectoryForRelativeRouteOfFile() {
+    String[] parameter = new String[1];
+    parameter[0] = "FileA";
+    tracker.setCurrentDirectory((Directory) root.getSub().get(0));
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "The target is not a directory.");
+    }
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for more than one
+   * parameter
+   */
+  @Test
+  public void testChangeDirectoryForMoreThanOneParameter() {
+    String[] parameter = new String[2];
+    parameter[0] = "/FolderA";
+    parameter[1] = "/FolderB/FolderC";
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "There is more than one parameter.");
+    }
+  }
+
+  /**
+   * It would test whether the ChangeDirectory return the exception as wanted for no parameter
+   */
+  @Test
+  public void testChangeDirectoryForNoParameter() {
+    String[] parameter = new String[0];
+    try {
+      cd.execute(parameter, tracker);
+    } catch (SystemErrorException e) {
+      assertEquals(e.getMessage(), "There is no parameter.");
+    }
+  }
+}

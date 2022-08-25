@@ -1,0 +1,21 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print nothing for command PushDirectory.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForPushDirectory implements Output {
+
+  /**
+   * The function would print nothing.
+   * 
+   * @param content the content should be an empty string
+   */
+  public void giveOutput(String content) {
+    if (content.equals(""))
+      return;
+  }
+}

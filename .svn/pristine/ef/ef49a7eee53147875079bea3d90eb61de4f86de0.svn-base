@@ -1,0 +1,111 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import exception.SystemErrorException;
+import helper.FindPath;
+import nodetype.Directory;
+import nodetype.JNode;
+
+/**
+ * This class is implemented from from interface Commands and is able to remove a specific
+ * directory.
+ * 
+ * @author Yuanqian Fang
+ *
+ */
+public class RemoveDirectory implements Commands {
+  public String getManual() {
+    String Manual = "rm DIR:\nremoves the DIR from the file system. This also"
+        + " removes all the children\nof DIR";
+    return Manual;
+  }
+
+  /**
+   * This function would call the function named pathToArrayList to get an ArrayList that represents
+   * the path, and then it would call a help function named findpath to search the directory that
+   * user wants to remove. If the function doesn't find anything wrong, it would remove the specific
+   * directory, otherwise it would throw error message.
+   * 
+   * @param input a list of String that contains the user's input
+   * @param tracker a Tracker that track the root directory and current directory
+   * @return an empty String shows that it is successful to remove a directory
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker tracker) throws SystemErrorException {
+    if (input.length != 1)
+      throw new SystemErrorException("This command can only take one agrument");
+    if (input[0].equals("/"))
+      throw new SystemErrorException("You are not able to delete the root directory");
+    ArrayList<String> listOfpath = pathToArrayList(input[0]);
+    if (input[0].substring(0, 1).equals("/") == false) {
+      JNode node = FindPath.findpath(listOfpath, tracker.getCurrentDirectory());
+      if (node != null) {
+        if (node.getIsDirectory() == true) {
+          node.getRoot().getSub().remove(node);
+          return "";
+        } else
+          throw new SystemErrorException("It's not a directory");
+      } else
+        throw new SystemErrorException("The path doesn't exist");
+    } else if (checkDirectory(listOfpath, tracker) == true) {
+      JNode node = FindPath.findpath(listOfpath, tracker.getCurrentDirectory());
+      if (node != null) {
+        if (node.getIsDirectory() == true) {
+          node.getRoot().getSub().remove(node);
+          return "";
+        } else
+          throw new SystemErrorException("It's not a directory");
+      } else
+        throw new SystemErrorException("The path doesn't exist");
+    } else
+      throw new SystemErrorException(
+          "You can't delete a directory that current directory is its subdirectory");
+  }
+
+
+  /**
+   * This function transform a String that contains the information of path to an ArrayList of
+   * String.
+   * 
+   * @param path a String that contains the information of path
+   * @return an ArrayList of String that stores name of every directory appears in the path
+   */
+  private ArrayList<String> pathToArrayList(String path) {
+    String[] path_list = path.split("/");
+    ArrayList<String> result = new ArrayList<>();
+    for (String s : path_list) {
+      result.add(s);
+    }
+    if (result.get(0).equals(""))
+      result.remove(0);
+    return result;
+  }
+
+  /**
+   * This function is able to check whether the current directory is the sub directory of the
+   * directory that user wants to remove
+   * 
+   * @param listOfpath an ArrayList of String that contains information of path
+   * @param tracker a Tracker that track the root directory and current directory
+   * @return a boolean that represents whether the current directory is the sub directory of the
+   *         directory that user wants to remove
+   */
+  private boolean checkDirectory(ArrayList<String> listOfpath, Tracker tracker) {
+    Directory currentDirectory = tracker.getCurrentDirectory();
+    ArrayList<String> currentPath = new ArrayList<String>();
+    while (currentDirectory != tracker.getRootDirectory()) {
+      currentPath.add(0, currentDirectory.getName());
+      currentDirectory = currentDirectory.getRoot();
+    }
+    if (listOfpath.size() > currentPath.size())
+      return true;
+    else {
+      for (int i = 0; i < listOfpath.size(); i++) {
+        if (listOfpath.get(i).equals(currentPath.get(i)) == false)
+          return true;
+      }
+      return false;
+    }
+  }
+}

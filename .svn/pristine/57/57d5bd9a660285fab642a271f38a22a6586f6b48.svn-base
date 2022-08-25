@@ -1,0 +1,29 @@
+package driver;
+
+public class Output {
+  
+  public static void giveOutputForFunction(String name, String content) {
+    if (content.equals("")) return;
+    
+    String[] outputlist = content.trim().split(" +");
+    //print error message for specific function
+    if (name.equals("Error")){
+      //Error message should be like "Error: Command "ls" cannot be executed because folderB is not found."
+      System.out.println(content);
+    }else if (name.equals("ls")) {
+      //This content should be like "folderA folderB folderC ......"
+      System.out.println(content);
+    }else if (name.equals("pwd")) {
+      //This should be like "/folderA/folderB/......"
+      System.out.println(content);
+    }//more function to be print
+    //TODO: More function to be implemented in Sprint2
+
+  }
+  public static void giveOurputForGeneralError() {
+    String content = "";
+    //content = returnGeneralErrorMessage
+    System.out.println(content);
+  }
+  
+}

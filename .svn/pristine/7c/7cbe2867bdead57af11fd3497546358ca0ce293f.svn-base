@@ -1,0 +1,8 @@
+Class name: File			
+Parent class: JNode
+Subclasses:
+
+Responsibilities:
+* Store the specific content in the file 
+	
+Collaborators:

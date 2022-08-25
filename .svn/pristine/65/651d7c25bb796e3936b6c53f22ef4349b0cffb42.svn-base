@@ -1,0 +1,48 @@
+package driver;
+
+import exception.SystemErrorException;
+import helper.RedirectAppend;
+import helper.RedirectOverwrite;
+
+/**
+ * This class calls the OutputFormatter for corresponding command.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class GiveOutput {
+  /**
+   * The function would first check which command user calls. Next the function would send the input
+   * to OutputFormatter for corresponding command. Then the function would call the GiveOutput for
+   * that command.
+   * 
+   * @param content the returned string from the command.
+   * @exception InstantiationException this exception is thrown if command is not in the HashMap
+   * @exception IllegalAccessException this exception is thrown if command is not in the HashMap
+   * @exception ClassNotFoundException this exception is thrown if command is not in the HashMap
+   */
+  public void printOutput(String content) {
+    if (content.equals("")) {
+      return;
+    }
+    String[] outputList = content.split("\r");
+    System.out.println(outputList[0]);
+    if (outputList.length == 2) {
+      System.err.println(outputList[1]);
+    }
+  }
+  
+  public void redirectOutput(String content, String path, boolean isAppend, Tracker tracker) throws SystemErrorException {
+    if (content.equals("")) {
+      return;
+    }
+    String output = content.split("\r")[0];
+    if (isAppend) {
+      RedirectAppend.execute(output, path, tracker);
+    }else {
+      RedirectOverwrite.execute(output, path, tracker);
+    }
+  }
+
+}

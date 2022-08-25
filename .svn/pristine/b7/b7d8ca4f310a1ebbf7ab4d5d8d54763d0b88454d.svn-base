@@ -1,0 +1,82 @@
+package command;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import driver.Tracker;
+import nodetype.*;
+
+
+public class ChangeDirectory implements Commands{
+  
+  public String execute(String[] parameter, Tracker tracker) {
+    String result;
+    if (parameter.length == 0) 
+      return "1";
+    else if (parameter.length > 1) 
+      return "2";
+    
+    String[] route = parameter[0].split("\\\\");
+    if (route[0].equals("")) {
+      result = ChangeDirectoryForWholeRoute(tracker, route);
+    }else if (Arrays.asList(getSubName(tracker.getCurrent_directory())).contains(route[0])) {
+      result = ChangeDirectoryForRelativeRoute(tracker, route);
+    }else {
+     return "3"; 
+    }
+    return result;
+  }
+  
+  
+  private String ChangeDirectoryForWholeRoute(Tracker tracker, String[] route) {
+    Directory current = tracker.getRoot_directory();
+    for (int n = 1; n < route.length; n++) {
+      if (Arrays.asList(getSubName(current)).contains(route[n])) {
+        // enter to the next directory
+        for (int i = 0; i < current.getSub().size(); i++) {
+          if (current.getSub().get(i).getName().equals(route[n]) && current.getSub().get(i).getIs_directory()) {
+            current = (Directory) current.getSub().get(i);
+            break;
+          }else if (current.getSub().get(i).getName().equals(route[n]) && !current.getSub().get(i).getIs_directory()) {
+            return "4";
+          }
+        }
+      }else return "3";
+    }  
+    
+    tracker.setCurrent_directory(current);
+    
+    return "";
+  }
+  
+  
+  private String ChangeDirectoryForRelativeRoute(Tracker tracker, String[] route) {
+    Directory current = tracker.getCurrent_directory();
+    for (String routeNode : route) {
+      if (Arrays.asList(getSubName(current)).contains(routeNode)) {
+        for (int i = 0; i < current.getSub().size(); i++) {
+          if (current.getSub().get(i).getName().equals(routeNode) && current.getSub().get(i).getIs_directory()) {
+            current = (Directory) current.getSub().get(i);
+            break;
+          }else if (current.getSub().get(i).getName().equals(routeNode) && !current.getSub().get(i).getIs_directory()) {
+            return "4";
+          }
+        }
+      }else return "3";
+    }
+    
+    tracker.setCurrent_directory(current);
+    
+    return "";
+  }
+  
+  private String[] getSubName(Directory directory) {
+    String[] subName = new String[directory.getSub().size()];
+    int i = 0;
+    for (JNode sublist : directory.getSub()) {
+      subName[i] = sublist.getName();
+      System.out.println(subName[i]);
+    }
+    return subName;
+  }
+
+}

@@ -1,0 +1,21 @@
+package command;
+
+import nodetype.Directory;
+import driver.Tracker;
+
+public class PrintWorkingDirectory implements Commands{ 
+ public String execute(String[] input, Tracker track){
+    if(input.length!=0) {
+      return "can't take a input";
+    }
+    else {
+       String result ="";
+       Directory currentdirectory = track.getCurrent_directory();
+          while(currentdirectory != null) {
+            result ="\\" + currentdirectory.getName()+ result;
+              currentdirectory = currentdirectory.getRoot();    
+          }
+         return result;
+    }
+ }
+}

@@ -1,0 +1,18 @@
+What did I work on in the last three days?
+    - worked on classes of JNode, File, Directory, MakeDirectory, 
+      PrintWorkingDirectory
+    - brainstormed design ideas for MakeDirectory 
+    - discussed with team members about how to make JShell find the command 
+      and execute it corresponding to the user's input
+    - shared the ideas about how to deal with error
+    
+What do I plan to work in the next three days?
+    - plan to work out the Sprint2Backlog
+    - review CRC cards about class in Sprint2 and add new CRC card if we need
+    - work on new tasks for sprint2
+    - Test the program by using commands that our team have finished
+    - continue to modify some codes of previous classes until they can run 
+      correctly perfectly
+
+Am I blocked on anything?
+    - don't know choose which way to handle error

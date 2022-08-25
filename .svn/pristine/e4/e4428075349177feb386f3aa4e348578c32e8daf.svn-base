@@ -1,0 +1,21 @@
+package nodetype;
+
+import java.util.ArrayList;
+
+public class Directory extends JNode {
+  private ArrayList<JNode> sub = new ArrayList<JNode>();
+
+
+  public ArrayList<JNode> getSub() {
+    return sub;
+  }
+
+  public void setSub(ArrayList<JNode> sub) {
+    this.sub = sub;
+  }
+
+  public Directory(Directory root, ArrayList<JNode> list) {
+    this.setRoot(root);
+    this.sub = list;
+  }
+}

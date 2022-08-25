@@ -1,0 +1,52 @@
+package command;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+import nodetype.Directory;
+import nodetype.JNode;
+
+public class Tree implements Commands{
+  
+  
+  public String getManual() {
+    String manual = "tree:\nThis command would start from the root directory "
+        + "('\\') and display the entire\nfile system as a tree. For every level"
+        + " of the tree, it would be indented by a\ntab character.";
+    return manual;
+  }
+  
+  
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length==0) {
+    StringBuilder result = new StringBuilder();
+    result.append("\\"+"\n");
+    displaytree(track.getRootDirectory(), 1, result);
+    result.deleteCharAt(result.length()-1);
+    return result.toString();
+    }
+    else {
+      throw new SystemErrorException("This command can't take input");
+    }
+  }
+  
+
+  
+  private static void displaytree(Directory directory, int level, StringBuilder result) {
+    
+    String preStr = "";
+    for(int i=0; i<level; i++) {
+     preStr += "  ";
+    }
+
+    for(int i=0; i<directory.getSub().size(); i++) {
+        JNode current = directory.getSub().get(i);
+        result.append(preStr+current.getName()+'\n');
+     if(current.getIsDirectory()) {
+      Directory temp = (Directory)current;
+     if(!temp.getSub().isEmpty()) {
+         displaytree(temp, level + 1, result);
+     }
+     }
+    }
+}
+}

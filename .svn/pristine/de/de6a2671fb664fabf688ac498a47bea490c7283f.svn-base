@@ -1,0 +1,66 @@
+package command;
+
+import java.util.ArrayList;
+import driver.Tracker;
+import nodetype.*;
+import helper.FindPath;
+import exception.*;
+
+
+public class ChangeDirectory implements Commands {
+  
+  public String execute(String[] parameter, Tracker tracker) throws SystemErrorException {
+    if (parameter.length == 0) 
+      throw new SystemErrorException("There is no parameter.");
+    else if (parameter.length > 1) 
+      throw new SystemErrorException("There is more than one parameter.");
+    if (parameter[0].equals("..")) {
+      tracker.setCurrent_directory(tracker.getCurrent_directory().getRoot());
+      return "";
+    }else if (parameter[0].equals("/")) {
+      tracker.setCurrent_directory(tracker.getRoot_directory());
+      return "";
+    }
+    String result;
+    String[] route = parameter[0].split("/");
+    ArrayList<String> routeList = new ArrayList<String>(); 
+    for (String routeName : route) {
+      routeList.add(routeName);
+    }
+    if (route[0].equals("")) {
+      routeList.remove(0);
+      result = ChangeDirectoryForWholeRoute(tracker, routeList, parameter[0]);
+    }else{
+      result = ChangeDirectoryForRelativeRoute(tracker, routeList, parameter[0]);
+    }
+    return result;
+  }
+  
+  
+  private String ChangeDirectoryForWholeRoute(Tracker tracker, ArrayList<String> routeList, String path) throws SystemErrorException {
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getRoot_directory());
+    if (target == null) {
+      throw new SystemErrorException("Cannot find the path \"" + path + "\".");
+    }else if (!target.getIs_directory()) {
+      throw new SystemErrorException("The target is not a directory.");
+    }else {
+      tracker.setCurrent_directory((Directory) target);
+    }
+    return "";
+  }
+  
+  
+  private String ChangeDirectoryForRelativeRoute(Tracker tracker, ArrayList<String> routeList, String path) throws SystemErrorException {
+    JNode target;
+    target = FindPath.findpath(routeList, tracker.getCurrent_directory());
+    if (target == null) {
+      throw new SystemErrorException("Cannot find the path \"" + path + "\".");
+    }else if (!target.getIs_directory()) {
+      throw new SystemErrorException("The target is not a directory.");
+    }else {
+      tracker.setCurrent_directory((Directory) target);
+    }
+    return "";
+  }
+}

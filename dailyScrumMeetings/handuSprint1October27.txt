@@ -1,0 +1,16 @@
+What did I work on in the last three days?
+    - dicided would should JShell do and worked on JShell, 
+    - brainstormed and implemented the List command
+    - brainstormed and implemented the Exit command
+    - shared my ideas of using hashmap that we learned this week
+    - discussed and modified the process of whole program.
+
+What do I plan to work in the next three days?
+	- work on sprint2 backlog and decided what should I do in next sprint
+	- review CRC cards to check if we need anything new
+    - work on missions of next Sprint
+
+
+Am I blocked on anything?
+    - what should the class that solve the errors do
+    - how could our codes have a better structure

@@ -1,0 +1,20 @@
+package nodetype;
+
+public class JNode {
+  private String name;
+  private Directory root;
+
+  public String getName(){
+    return name;
+  }
+
+   public void setName(String name) {
+    this.name = name;
+  }
+   public Directory getRoot() {
+     return this.root;
+   }
+   public void setRoot(Directory root) {
+     this.root = root;
+   }    
+}

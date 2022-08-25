@@ -1,0 +1,16 @@
+What did I work on in the last three days?
+    - revised and fixed the bugs in the History command
+    - revised and fixed the bugs in the Echo command
+    - brainstormed and implemented the Concatenate command
+    - brainstormed and implemented the Manual command
+    - modified previous functions to let them throw errors when errors appear
+
+What do I plan to work in the next three days?
+	- work on sprint3 backlog and decided what should I do in next sprint
+	- review CRC cards to check if we need anything new
+    - work on missions of next Sprint
+
+
+Am I blocked on anything?
+	- how to write good javadocs for all of my classes
+    - how could our codes have a better structure

@@ -1,0 +1,112 @@
+package command;
+
+import java.util.HashMap;
+
+import driver.Tracker;
+import exception.SystemErrorException;
+
+/**
+ * This class is complemented from Commands and it would show the documentation of specific
+ * commands. It would add the String which are documentations of specific commands into return
+ * String. It uses HashMap to match commands with documentations and String that represents error
+ * would be added into return String if specific command does not exist.
+ * 
+ * @author Du Han
+ *
+ */
+public class Manual implements Commands {
+  private HashMap<String, String> manualHashMap = new HashMap<String, String>();
+  private String lsman = "ls [PATH бн]:\n" + "If no paths are given, print "
+      + "the contents (file or directory) of the current\ndirectory, "
+      + "with a new line following each of the content (file or directory"
+      + ").\nOtherwise, for each path p, the order listed:\nIf p "
+      + "specifies a file, print p\nIf p specifies a directory, print p,"
+      + " a colon, then the contents of that\ndirectory, then an extra "
+      + "new line.\nIf p does not exist, print a suitable message.";
+  private String mkdirman = "mkdir DIR1 DIR2:\n" + "This command takes in two"
+      + " arguments only. Create directories, each of which\nmay be "
+      + "relative to the current directory or may be a full path. If "
+      + "creating\nDIR1 results in any kind of error, do not proceed with"
+      + " creating DIR 2.\nHowever, if DIR1 was created successfully, "
+      + "and DIR2 creation results in an\nerror, then give back an error " + "specfic to DIR2.";
+  private String cdman = "cd DIR:\n" + "Change directory to DIR, which may be"
+      + " relative to the current directory or\nmay be a full path. .. "
+      + "means a parent directory and a . means the current \ndirectory.";
+  private String pwdman =
+      "pwd:\n" + "Print the current working directory " + "(including the whole" + " path).";
+  private String exitman = "exit:\nQuit the program";
+  private String pushdman = "pushd DIR:\n" + "Saves the current working "
+      + "directory by pushing onto directory stack and then\nchanges the "
+      + "new current working directory to " + "DIR.";
+  private String popdman =
+      "popd:\nRemove the top entry from the directory " + "stack, and cd into it.";
+  private String historyman = "history [n]:\nThis command will print out "
+      + "recent commands, one command per line.We can\ntruncate the "
+      + "output by specifying a number n after the command to print\nthe "
+      + "last n commands typed";
+  private String catman = "cat FILE1 [FILE2 бн]:\nDisplay the contents of "
+      + "FILE1 and other files concatenated in the shell.";
+  private String echoman = "echo STRING [> OUTFILE] or echo STRING >> "
+      + "OUTFILE:\nIf OUTFILE is not provided, print STRING on the "
+      + "shell. Otherwise, put STRING\ninto file OUTFILE. STRING is a "
+      + "string of characters surrounded by double\nquotation marks. "
+      + "This creates a new file if OUTFILE does not exists; when\nthe "
+      + "second parameter is >, then it would erases the old contents; "
+      + "when the\nsecond parameter is >>, it woulds append instead of "
+      + "overwrites, if OUTFILE\nalready exists.";
+  private String manman = "man CMD [CMD2 бн]:\nPrint documentation for CMD " + "(s)";
+
+  /**
+   * This function would call initializeCommandHashMap function to initialize the HashMap and then
+   * get the documentation of each commands inputed by user. The documentation of each command would
+   * be added to the return String if the command exists; if the command does not exist or no
+   * parameter is inputed, it would throw error.
+   * 
+   * @param input the inputed parameters from user
+   * @param track the tracker defined in the interpreter
+   * @return the String that contains documentations of commands
+   * @throws SystemErrorException
+   */
+  public String execute(String[] input, Tracker track) throws SystemErrorException {
+    if (input.length == 0) {
+      throw new SystemErrorException("must has at least one parameter");
+    } else {
+      initializeCommandHashMap();
+      StringBuilder result = new StringBuilder();
+      try {
+        for (String i : input) {
+          if (manualHashMap.containsKey(i)) {
+            result.append(manualHashMap.get(i));
+            result.append("\r");
+          } else {
+            throw new SystemErrorException(i + " DNE");
+          }
+        }
+        String strresult = result.toString();
+        return strresult;
+      } catch (SystemErrorException e) {
+        System.err.println(e.getMessage());
+        String strresult = result.toString();
+        return strresult;
+      }
+    }
+  }
+
+  /**
+   * This function would initialize the HashMap with the name of commands and their documentations.
+   */
+  private void initializeCommandHashMap() {
+    this.manualHashMap.put("cd", cdman);
+    this.manualHashMap.put("exit", exitman);
+    this.manualHashMap.put("ls", lsman);
+    this.manualHashMap.put("mkdir", mkdirman);
+    this.manualHashMap.put("pwd", pwdman);
+    this.manualHashMap.put("pushd", pushdman);
+    this.manualHashMap.put("popd", popdman);
+    this.manualHashMap.put("history", historyman);
+    this.manualHashMap.put("cat", catman);
+    this.manualHashMap.put("echo", echoman);
+    this.manualHashMap.put("man", manman);
+  }
+
+}

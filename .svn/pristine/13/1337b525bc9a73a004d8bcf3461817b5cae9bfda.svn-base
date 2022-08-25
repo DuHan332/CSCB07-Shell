@@ -1,0 +1,24 @@
+package outputformatter;
+
+/**
+ * This class is implement from interface Output and would print the content for
+ * command History.
+ * 
+ * @author Dezhi Ren
+ *
+ */
+
+public class OutputForHistory implements Output {
+
+  /**
+   * The function would print the recent command history.
+   * 
+   * @param content the string received from history command
+   */
+  public void giveOutput(String content) {
+    String[] list = content.split("\r");
+    for (String message : list) {
+      System.out.println(message);
+    }
+  }
+}

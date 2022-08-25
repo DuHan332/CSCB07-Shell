@@ -1,0 +1,41 @@
+package driver;
+import nodetype.*;
+import command.*;
+import java.util.HashMap;
+
+
+public class InputInterpreter {
+  public Tracker tracker;
+  private GiveOutput outputfile = new GiveOutput();
+  private HashMap<String, String> commandHashMap = new HashMap<String, String>();
+  
+  public void interprete(String input) {
+    String[] inputlist = input.trim().split(" +");
+    String commandName = inputlist[0];
+    outputfile.initializeOutputHashMap();
+    
+    if (commandHashMap.containsKey(commandName)) {
+      // Command command = (Command) Class.forName(commandHashMap.get(commandName)).newInstance();
+      // if (inputlist.length == 1)
+      //   outputfile.printOutput(commandName, command.execute(""));
+      // else
+      //   String[] parameter = new String[inputlist.length - 1];
+      //   System.arraycopy(inputlist, 1, parameter, 0, parameter.length);
+      //   outputfile.printOutput(commandName, command.execute(parameter));
+      
+    }else {
+      outputfile.printOutput("general", "");;
+    }
+  }
+  
+  public void initializeCommandHashMap() {
+    this.commandHashMap.put("cd", "command.ChangeDirectory");
+    this.commandHashMap.put("exit", "command.Exit");
+    this.commandHashMap.put("ls", "command.List");
+    this.commandHashMap.put("mkdir", "command.MakeDirectory");
+    this.commandHashMap.put("pwd", "command.PrintWorkingDirectory");
+    //TODO: add more in Sprint2
+    
+  }
+  
+}

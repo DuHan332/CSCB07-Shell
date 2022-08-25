@@ -1,0 +1,10 @@
+What did I work on in the last three days?
+    - Format the code I have written.
+    - Write JavaDoc for the class I implemented.
+    - Improved the code structure for each class.
+
+What do I plan to work in the next three days?
+    - N/A
+
+Am I blocked on anything?
+    - How to describe the ability of functions in a concise way.

@@ -1,0 +1,20 @@
+package command;
+
+import driver.Tracker;
+
+public class PopDirectory implements Commands{
+
+  public String execute(String[] parameter, Tracker tracker) {
+    if (parameter.length != 0) {
+      return "Error1";
+    }else if (tracker.getStack().size() == 0) {
+      return "Stack is empty";
+    }else {
+      tracker.setCurrent_directory(tracker.getStack().get(tracker.getStack().size() - 1));
+      tracker.getStack().remove(tracker.getStack().size() - 1);
+    }
+    
+    return "";
+  }
+
+}
