@@ -45,4 +45,4 @@ tree
 
 Use "man CMD" for manual of commands.
 
-This is only a smulation of OS Shell, all commands would not delete any files on your PC.
+This is only a simulation of OS Shell, all commands would not delete any files on your PC.
